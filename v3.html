@@ -294,7 +294,7 @@
     <div class="stat-row">
       <div class="stat"><b>13</b><span>Secciones enlazadas</span></div>
       <div class="stat"><b>1</b><span>Bug crítico de hosting</span></div>
-      <div class="stat"><b>5</b><span>Confirmadas construidas</span></div>
+      <div class="stat"><b>4</b><span>Confirmadas construidas</span></div>
       <div class="stat"><b>0</b><span>Acceso a repo aún</span></div>
     </div>
   </header>
@@ -549,30 +549,22 @@
           <h3>Calendario · FAQ</h3>
           <div class="path">/calendario · /preguntas-frecuentes</div>
         </div>
-        <span class="pill partial">Calendario listo — falta FAQ</span>
+        <span class="pill todo">Sin construir</span>
       </div>
       <p class="purpose">
-        Calendario ya está construido y con harto detalle. Solo queda FAQ, que sigue siendo la página más rápida de cerrar.
+        Las dos páginas más rápidas de cerrar — buena ganancia rápida entre tareas más grandes.
       </p>
       <dl class="kv">
-        <div class="kv-row"><dt>Qué existe hoy</dt><dd>
-          <strong>Calendario: construido y confirmado.</strong> Fechas del segundo semestre 2026 para Ingeco
-          Diurno y Prosecución, en 7 bloques: matrícula y toma de ramos, período académico, evaluaciones (PEP1/PEP2),
-          trámites académicos, feriados y recesos, examen de grado y tesis. Contenido curado a mano, con fechas
-          exactas y notas por evento — no es un embed de Google Calendar, es una lista propia bien armada.
-          FAQ: sigue sin evidencia de contenido.
-        </dd></div>
+        <div class="kv-row"><dt>Qué existe hoy</dt><dd>Solo links en el footer.</dd></div>
         <div class="kv-row"><dt>Enfoque técnico</dt><dd class="tech">
-          Calendario ya no necesita nada de arquitectura — como mucho, evaluar si conviene mover las fechas a un
-          JSON/Markdown separado del componente para que actualizarlas semestre a semestre no signifique tocar
-          código. FAQ: acordeón simple, sin backend.
+          Calendario: para la primera versión, incrusta el Google Calendar que la mesa ya use internamente
+          (si existe) en vez de construir uno propio — se actualiza solo. FAQ: acordeón simple, sin backend.
         </dd></div>
-        <div class="kv-row"><dt>Necesito de ti</dt><dd>Solo lo de FAQ: las preguntas que más se repiten (probablemente ya las responden seguido por Instagram/WhatsApp).</dd></div>
+        <div class="kv-row"><dt>Necesito de ti</dt><dd>Las preguntas que más se repiten (probablemente ya las responden seguido por Instagram/WhatsApp) y si existe un calendario interno para incrustar.</dd></div>
       </dl>
       <div class="tasks">
-        <div class="task"><input type="checkbox" data-task="cal-0" id="cal-0" checked disabled><label for="cal-0" class="done-text">Calendario — confirmado construido</label></div>
         <div class="task"><input type="checkbox" data-task="cal-1" id="cal-1"><label for="cal-1">Recopilar preguntas frecuentes reales</label></div>
-        <div class="task"><input type="checkbox" data-task="cal-3" id="cal-3"><label for="cal-3">(Opcional) mover las fechas del calendario a datos separados del código</label></div>
+        <div class="task"><input type="checkbox" data-task="cal-2" id="cal-2"><label for="cal-2">Definir fuente del calendario (¿Google Calendar existente?)</label></div>
       </div>
     </div>
 
@@ -621,7 +613,7 @@
           <tr><td>Comunidad ▾</td><td>Nav principal (desplegable)</td><td><span class="pill unknown">Contenido sin abrir</span></td></tr>
           <tr><td>El CEIC ▾</td><td>Nav principal (desplegable)</td><td><span class="pill partial">Contiene "Nosotros" (confirmado) — el resto del menú, sin verificar</span></td></tr>
           <tr><td>Programa</td><td>Tile Inicio + footer <span class="fine">(no está en Comunidad▾ ni El CEIC▾)</span></td><td><span class="pill built">Construido — confirmado</span></td></tr>
-          <tr><td>Calendario</td><td>Solo footer</td><td><span class="pill built">Construido — confirmado</span></td></tr>
+          <tr><td>Calendario</td><td>Solo footer</td><td><span class="pill partial">Meta propia ("fechas clave del semestre") sugiere contenido real — cuerpo sin confirmar</span></td></tr>
           <tr><td>WikiEmpresas, Malla, Noticias, Convenios, FAQ, Actas, Transparencia, Documentación</td><td>Solo footer</td><td><span class="pill partial">Ruta ya existe en el bundle — contenido real sin confirmar</span></td></tr>
         </tbody>
       </table>
@@ -645,13 +637,13 @@
       <div class="flag" style="margin-top:14px;">
         <span class="flag-icon">◆</span>
         <div class="flag-body">
-          <span class="flag-label">Calendario — confirmado construido</span>
-          El cuerpo real lo confirma: 7 bloques temáticos (matrícula y toma de ramos, período académico,
-          evaluaciones PEP1/PEP2, trámites académicos, feriados y recesos, examen de grado y tesis), con fechas
-          exactas del segundo semestre 2026 curadas a mano — no un embed de Google Calendar, una lista propia bien
-          armada. La sospecha por su meta descripción específica era correcta. También se confirman dos rutas
-          nuevas en el bundle: <code class="inline">wikiprofes._slug-*.js</code> (ficha individual de un profesor,
-          o sea WikiProfes tiene página de detalle por profesor, no solo un listado) y
+          <span class="flag-label">Hallazgo del head de Calendario</span>
+          A diferencia de las demás rutas del footer, Calendario trae una meta descripción propia y específica
+          ("Fechas clave del semestre para Ingeniería Comercial") en vez de la genérica del sitio — señal de que
+          hay algo de contenido pensado ahí, no solo un placeholder copiado. Sin el <code class="inline">&lt;main&gt;</code>
+          no puedo confirmarlo del todo, así que lo dejo como "sugerido" hasta que alguien pegue el cuerpo. También
+          se confirman dos rutas nuevas en el bundle: <code class="inline">wikiprofes._slug-*.js</code> (ficha
+          individual de un profesor, o sea WikiProfes tiene página de detalle por profesor, no solo un listado) y
           <code class="inline">preguntas-frecuentes-*.js</code>.
         </div>
       </div>
