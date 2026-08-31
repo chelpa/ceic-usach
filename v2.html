@@ -613,8 +613,7 @@
           <tr><td>Comunidad ▾</td><td>Nav principal (desplegable)</td><td><span class="pill unknown">Contenido sin abrir</span></td></tr>
           <tr><td>El CEIC ▾</td><td>Nav principal (desplegable)</td><td><span class="pill partial">Contiene "Nosotros" (confirmado) — el resto del menú, sin verificar</span></td></tr>
           <tr><td>Programa</td><td>Tile Inicio + footer <span class="fine">(no está en Comunidad▾ ni El CEIC▾)</span></td><td><span class="pill built">Construido — confirmado</span></td></tr>
-          <tr><td>Calendario</td><td>Solo footer</td><td><span class="pill partial">Meta propia ("fechas clave del semestre") sugiere contenido real — cuerpo sin confirmar</span></td></tr>
-          <tr><td>WikiEmpresas, Malla, Noticias, Convenios, FAQ, Actas, Transparencia, Documentación</td><td>Solo footer</td><td><span class="pill partial">Ruta ya existe en el bundle — contenido real sin confirmar</span></td></tr>
+          <tr><td>WikiEmpresas, Malla, Noticias, Convenios, FAQ, Calendario, Actas, Transparencia, Documentación</td><td>Solo footer</td><td><span class="pill partial">Ruta ya existe en el bundle — contenido real sin confirmar</span></td></tr>
         </tbody>
       </table>
       <div class="flag" style="margin-top:18px;">
@@ -632,19 +631,6 @@
           trabajo: es más "reemplazar el contenido de un componente que ya existe" que "crear la ruta desde cero".
           Vale la pena confirmar el contenido real de 1–2 con el mismo truco del código fuente (Malla y
           WikiEmpresas son las más útiles de chequear primero).
-        </div>
-      </div>
-      <div class="flag" style="margin-top:14px;">
-        <span class="flag-icon">◆</span>
-        <div class="flag-body">
-          <span class="flag-label">Hallazgo del head de Calendario</span>
-          A diferencia de las demás rutas del footer, Calendario trae una meta descripción propia y específica
-          ("Fechas clave del semestre para Ingeniería Comercial") en vez de la genérica del sitio — señal de que
-          hay algo de contenido pensado ahí, no solo un placeholder copiado. Sin el <code class="inline">&lt;main&gt;</code>
-          no puedo confirmarlo del todo, así que lo dejo como "sugerido" hasta que alguien pegue el cuerpo. También
-          se confirman dos rutas nuevas en el bundle: <code class="inline">wikiprofes._slug-*.js</code> (ficha
-          individual de un profesor, o sea WikiProfes tiene página de detalle por profesor, no solo un listado) y
-          <code class="inline">preguntas-frecuentes-*.js</code>.
         </div>
       </div>
       <div class="flag" style="margin-top:14px;">
