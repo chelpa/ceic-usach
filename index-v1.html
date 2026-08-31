@@ -294,7 +294,7 @@
     <div class="stat-row">
       <div class="stat"><b>13</b><span>Secciones enlazadas</span></div>
       <div class="stat"><b>1</b><span>Bug crítico de hosting</span></div>
-      <div class="stat"><b>4</b><span>Confirmadas construidas</span></div>
+      <div class="stat"><b>~3</b><span>Con contenido real</span></div>
       <div class="stat"><b>0</b><span>Acceso a repo aún</span></div>
     </div>
   </header>
@@ -323,32 +323,20 @@
       <p>
         <strong>El arreglo:</strong> decirle al hosting que sirva <code class="inline">index.html</code> para
         cualquier ruta que no sea un archivo estático, y deja que React Router (o lo que estén usando)
-        resuelva la página en el navegador.
-      </p>
-      <p class="fine">
-        <strong>Confirmado con tus propios headers:</strong> al recargar <code class="inline">/wikiprofes</code>
-        la respuesta trae <code class="inline">server: cloudflare</code> y <code class="inline">cf-ray</code>,
-        con <code class="inline">content-length: 0</code> — un 404 con cuerpo vacío, típico de Cloudflare Pages
-        cuando no hay ruta que haga match y no existe un <code class="inline">_redirects</code> de respaldo.
-        Empieza por la pestaña <strong>Cloudflare Pages</strong> de abajo. Si el dominio en realidad está
-        proxied por Cloudflare hacia otro origen (Vercel/Netlify detrás), revisa el panel de hosting real para
-        confirmarlo — pero el vacío del cuerpo apunta directo a Pages.
+        resuelva la página en el navegador. Primero identifica dónde está desplegado — en las herramientas
+        de desarrollador del navegador, pestaña <em>Network</em>, recarga cualquier ruta y mira los headers
+        de la respuesta (<code class="inline">x-vercel-id</code>, <code class="inline">x-nf-request-id</code>,
+        <code class="inline">cf-ray</code> te dicen el proveedor) — y aplica el snippet que corresponda:
       </p>
 
       <div class="tabs" role="tablist">
-        <button class="tab-btn" role="tab" aria-selected="true" data-tab="cf">Cloudflare Pages ✓</button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="vercel">Vercel</button>
+        <button class="tab-btn" role="tab" aria-selected="true" data-tab="vercel">Vercel</button>
         <button class="tab-btn" role="tab" aria-selected="false" data-tab="netlify">Netlify</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="cf">Cloudflare Pages</button>
         <button class="tab-btn" role="tab" aria-selected="false" data-tab="nginx">Nginx (VPS propio)</button>
       </div>
 
-      <div class="tab-panel active" data-panel="cf">
-        <p class="fine">Crea <code class="inline">public/_redirects</code> (se copia tal cual al build):</p>
-        <pre><button class="copy-btn" data-copy>Copiar</button><span class="cm"># public/_redirects</span>
-/*  /index.html  200</pre>
-      </div>
-
-      <div class="tab-panel" data-panel="vercel">
+      <div class="tab-panel active" data-panel="vercel">
         <p class="fine">Crea <code class="inline">vercel.json</code> en la raíz del proyecto:</p>
         <pre><button class="copy-btn" data-copy>Copiar</button><span class="cm">// vercel.json</span>
 {
@@ -356,7 +344,12 @@
 }</pre>
       </div>
       <div class="tab-panel" data-panel="netlify">
-        <p class="fine">Igual que Cloudflare Pages — <code class="inline">public/_redirects</code>:</p>
+        <p class="fine">Crea <code class="inline">public/_redirects</code> (se copia tal cual al build):</p>
+        <pre><button class="copy-btn" data-copy>Copiar</button><span class="cm"># public/_redirects</span>
+/*  /index.html  200</pre>
+      </div>
+      <div class="tab-panel" data-panel="cf">
+        <p class="fine">Mismo archivo que Netlify, Cloudflare Pages lo respeta igual — <code class="inline">public/_redirects</code>:</p>
         <pre><button class="copy-btn" data-copy>Copiar</button><span class="cm"># public/_redirects</span>
 /*  /index.html  200</pre>
       </div>
@@ -525,12 +518,10 @@
         descuentos y beneficios para estudiantes.
       </p>
       <dl class="kv">
-        <div class="kv-row"><dt>Qué existe hoy</dt><dd>El link en el footer, y ya vimos que la ruta tiene su propio componente en el bundle (probablemente un placeholder) — falta confirmar qué muestra hoy.</dd></div>
+        <div class="kv-row"><dt>Qué existe hoy</dt><dd>Solo links en el footer.</dd></div>
         <div class="kv-row"><dt>Enfoque técnico</dt><dd class="tech">
-          Dos patrones de tarjeta ya construidos para reusar: WikiProfes resolvió ficha + buscador + 202 registros
-          para "una persona con datos"; la grilla de directiva en Nosotros (tarjeta con foto cuadrada, rol en
-          mayúsculas, nombre y lista de responsabilidades) calza casi literal con "una empresa con datos" si no
-          necesitas buscador. Cambia el modelo (empresa, rubro, tipo de convenio, beneficio, contacto) en vez de
+          WikiProfes ya resolvió ficha + buscador + 202 registros. Reutiliza ese mismo componente de lista/ficha
+          y cambia el modelo de datos (empresa, rubro, tipo de convenio, beneficio, contacto) en vez de
           reescribir la UI desde cero.
         </dd></div>
         <div class="kv-row"><dt>Necesito de ti</dt><dd>El listado de convenios/empresas que la mesa ya maneja (probablemente existe en una planilla interna).</dd></div>
@@ -600,7 +591,7 @@
     <div class="section-head">
       <span class="section-kicker">Lo que no alcancé a verificar</span>
       <h2 class="section-title">Inventario abierto</h2>
-      <p class="section-dek">El bug de ruteo (ver arriba) me impidió cargar el contenido real de varias rutas, y no pude abrir los desplegables del menú. Francisco confirmó "Nosotros" pasándome el HTML real de la página — mismo truco sirve para el resto: clic en la sección desde el sitio, clic derecho → "Ver código fuente de la página" (o inspeccionar → copiar el HTML del `&lt;main&gt;`), y lo pego aquí.</p>
+      <p class="section-dek">El bug de ruteo (ver arriba) me impidió cargar el contenido real de varias rutas, y no pude abrir los desplegables del menú. Vale la pena que hagas este chequeo manual una vez — 10 minutos — y me pases el resultado.</p>
     </div>
     <div class="card scrollx">
       <table class="inventory">
@@ -608,45 +599,14 @@
         <tbody>
           <tr><td>Inicio</td><td>Nav principal</td><td><span class="pill built">Construido</span></td></tr>
           <tr><td>WikiProfes</td><td>Nav principal + tile Inicio</td><td><span class="pill built">Construido</span></td></tr>
-          <tr><td>Nosotros</td><td>El CEIC ▾ + tile Inicio + footer</td><td><span class="pill built">Construido — confirmado</span></td></tr>
           <tr><td>Apuntes</td><td>Nav principal</td><td><span class="pill unknown">Sin verificar</span></td></tr>
-          <tr><td>Comunidad ▾</td><td>Nav principal (desplegable)</td><td><span class="pill unknown">Contenido sin abrir</span></td></tr>
-          <tr><td>El CEIC ▾</td><td>Nav principal (desplegable)</td><td><span class="pill partial">Contiene "Nosotros" (confirmado) — el resto del menú, sin verificar</span></td></tr>
-          <tr><td>Programa</td><td>Tile Inicio + footer <span class="fine">(no está en Comunidad▾ ni El CEIC▾)</span></td><td><span class="pill built">Construido — confirmado</span></td></tr>
-          <tr><td>WikiEmpresas, Malla, Noticias, Convenios, FAQ, Calendario, Actas, Transparencia, Documentación</td><td>Solo footer</td><td><span class="pill partial">Ruta ya existe en el bundle — contenido real sin confirmar</span></td></tr>
+          <tr><td>Comunidad ▾</td><td>Nav principal (desplegable)</td><td><span class="pill unknown">No pude abrir el menú</span></td></tr>
+          <tr><td>El CEIC ▾</td><td>Nav principal (desplegable)</td><td><span class="pill unknown">No pude abrir el menú</span></td></tr>
+          <tr><td>Nosotros</td><td>Tile Inicio + footer</td><td><span class="pill partial">Descrito en Inicio, contenido sin confirmar</span></td></tr>
+          <tr><td>Programa</td><td>Tile Inicio + footer</td><td><span class="pill partial">Descrito en Inicio, contenido sin confirmar</span></td></tr>
+          <tr><td>WikiEmpresas, Malla, Noticias, Convenios, FAQ, Calendario, Actas, Transparencia, Documentación</td><td>Solo footer</td><td><span class="pill todo">Sin evidencia de contenido</span></td></tr>
         </tbody>
       </table>
-      <div class="flag" style="margin-top:18px;">
-        <span class="flag-icon">◆</span>
-        <div class="flag-body">
-          <span class="flag-label">Hallazgo del HTML de Nosotros</span>
-          El <code class="inline">&lt;head&gt;</code> que pegaste trae <code class="inline">modulepreload</code> para
-          <strong>todas</strong> las secciones del footer: <code class="inline">wikiempresas-*.js</code>,
-          <code class="inline">malla-*.js</code>, <code class="inline">noticias-*.js</code>,
-          <code class="inline">calendario-*.js</code>, <code class="inline">actas-*.js</code>,
-          <code class="inline">transparencia-*.js</code>, <code class="inline">convenios-*.js</code>, y —
-          confirmado con el head de WikiProfes — <code class="inline">documentacion-*.js</code> también. Con esto
-          ya están las 8: cada sección del footer tiene su propio componente de ruta en el código — probablemente
-          el placeholder "en construcción" que mencionaste al principio, no una ruta faltante. Cambia un poco el
-          trabajo: es más "reemplazar el contenido de un componente que ya existe" que "crear la ruta desde cero".
-          Vale la pena confirmar el contenido real de 1–2 con el mismo truco del código fuente (Malla y
-          WikiEmpresas son las más útiles de chequear primero).
-        </div>
-      </div>
-      <div class="flag" style="margin-top:14px;">
-        <span class="flag-icon">◆</span>
-        <div class="flag-body">
-          <span class="flag-label">Hallazgo del HTML de Programa</span>
-          También está terminado, y con harto más profundidad de lo que suponía: rastrea <strong>72 compromisos</strong>
-          agrupados en 8 comisiones (Mesa Central, Apoyo Estudiantil, Finanzas y Bienestar, Cultura, Emprendimiento y
-          Sostenibilidad, Comunicaciones, Bienestar Integral, Deportes), con barra de avance general
-          (7/72 — 10%) y estado individual por compromiso (completo / en progreso / no realizado). Es, en los hechos,
-          la página de transparencia de gestión más completa del sitio. Un detalle menor: ni "Comunidad" ni
-          "El CEIC" se resaltan como activos al entrar aquí — Programa no vive dentro de ningún desplegable del nav
-          principal, solo se llega por el tile del Inicio o el footer. No es urgente, pero es un ajuste barato de
-          navegación para cuando se toque el header.
-        </div>
-      </div>
     </div>
   </section>
 
