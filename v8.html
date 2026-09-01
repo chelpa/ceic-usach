@@ -341,15 +341,11 @@
      BITÁCORA (línea de tiempo) — namespaced with "bm-" to avoid any
      collision with the .card/.stat/.kv/etc. classes used in the Plan view
      ================================================================ */
-  .bm-shell{
-    display:grid; grid-template-columns:230px 1fr; background:var(--paper);
-    min-height:100vh; min-height:100dvh; /* dvh: avoids mobile browsers' address-bar causing "stuck" jumps */
-  }
+  .bm-shell{ display:grid; grid-template-columns:230px 1fr; min-height:100vh; background:var(--paper); }
   .bm-sidebar{
     background:var(--code-bg); color:var(--code-fg);
     padding:22px 16px; display:flex; flex-direction:column; gap:22px;
-    position:sticky; top:44px;
-    height:calc(100vh - 44px); height:calc(100dvh - 44px);
+    position:sticky; top:44px; height:calc(100vh - 44px);
   }
   .bm-brand{ display:flex; flex-direction:column; gap:2px; }
   .bm-brand-mark{ font-family:'Fraunces', serif; font-size:1.25rem; font-weight:600; color:var(--code-fg); }
@@ -449,8 +445,7 @@
   .bm-scrim{ position:fixed; inset:0; background:rgba(20,22,28,.4); opacity:0; pointer-events:none; transition:opacity .18s ease; z-index:40; }
   .bm-scrim.open{ opacity:1; pointer-events:auto; }
   .bm-drawer{
-    position:fixed; top:0; right:0; width:min(420px, 92vw);
-    height:100vh; height:100dvh;
+    position:fixed; top:0; right:0; height:100vh; width:min(420px, 92vw);
     background:var(--paper-raised); border-left:1px solid var(--line); box-shadow:var(--shadow);
     transform:translateX(100%); transition:transform .2s ease; z-index:41;
     display:flex; flex-direction:column;
@@ -1060,11 +1055,6 @@
   <main class="bm-main">
     <p class="bm-fine" style="margin:0 0 4px;">Registro de lo que realmente va pasando, sección por sección — arquitectura, diseño, implementación, contenido, decisiones e incidencias. El plan de arriba (pestaña "Plan") dice qué falta; esto dice qué se hizo y cuándo.</p>
 
-    <div class="bm-filters" id="bmViewToggle" style="margin-top:12px;">
-      <button class="bm-chip" data-view="resumen" aria-pressed="true">Actividad reciente</button>
-      <button class="bm-chip" data-view="completa" aria-pressed="false">Línea de tiempo completa</button>
-    </div>
-
     <div class="bm-stat-row" id="bmStatRow"></div>
 
     <div class="bm-toolbar">
@@ -1281,15 +1271,8 @@
   }
 
   function bmRenderSideNav(){
-    // Sidebar nav (desktop) — .bm-side-nav is hidden on narrow screens (see the
-    // max-width:760px rule), so #bmViewToggle below is what actually lets you
-    // switch to "Línea de tiempo completa" on mobile. Both stay in sync.
-    document.querySelectorAll('.bm-nav-btn[data-view]').forEach(function(btn){
+    document.querySelectorAll('.bm-nav-btn').forEach(function(btn){
       btn.setAttribute('aria-current', btn.getAttribute('data-view')===bmView ? 'true':'false');
-      btn.onclick = function(){ bmView = btn.getAttribute('data-view'); renderBm(); };
-    });
-    document.querySelectorAll('#bmViewToggle [data-view]').forEach(function(btn){
-      btn.setAttribute('aria-pressed', btn.getAttribute('data-view')===bmView ? 'true':'false');
       btn.onclick = function(){ bmView = btn.getAttribute('data-view'); renderBm(); };
     });
   }
@@ -1400,28 +1383,6 @@
   /* ---------- drawer / new entry form ---------- */
   var bmDrawer = document.getElementById('bmDrawer');
   var bmScrim = document.getElementById('bmScrim');
-  var bmScrollLockY = 0;
-
-  // Locking body scroll while the drawer is open avoids the classic mobile
-  // bug where the page behind a fixed-position panel becomes unscrollable
-  // or feels "stuck" after closing it (no scroll lock + position:fixed
-  // drawer is what usually causes that on iOS/Android).
-  function bmLockScroll(){
-    bmScrollLockY = window.scrollY || document.documentElement.scrollTop || 0;
-    document.body.style.position = 'fixed';
-    document.body.style.top = (-bmScrollLockY) + 'px';
-    document.body.style.left = '0';
-    document.body.style.right = '0';
-    document.body.style.width = '100%';
-  }
-  function bmUnlockScroll(){
-    document.body.style.position = '';
-    document.body.style.top = '';
-    document.body.style.left = '';
-    document.body.style.right = '';
-    document.body.style.width = '';
-    window.scrollTo(0, bmScrollLockY);
-  }
 
   function bmOpenDrawer(){
     var tipoSel = document.getElementById('bm-f-tipo');
@@ -1432,12 +1393,10 @@
     bmRenderExtraFields();
     bmDrawer.classList.add('open'); bmDrawer.setAttribute('aria-hidden','false');
     bmScrim.classList.add('open');
-    bmLockScroll();
   }
   function bmCloseDrawer(){
     bmDrawer.classList.remove('open'); bmDrawer.setAttribute('aria-hidden','true');
     bmScrim.classList.remove('open');
-    bmUnlockScroll();
   }
   function bmRenderExtraFields(){
     var tipo = document.getElementById('bm-f-tipo').value;
