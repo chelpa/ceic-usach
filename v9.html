@@ -1212,6 +1212,10 @@
     btn.addEventListener('click', function(){ setMode(btn.getAttribute('data-mode')); });
   });
 
+  var savedMode = 'plan';
+  try { savedMode = localStorage.getItem(MODE_KEY) || 'plan'; } catch(e){}
+  setMode(savedMode);
+
   /* ---------- bitácora (línea de tiempo) ---------- */
   var BM_STORE_KEY = 'ceic-bitacora-modular-v1';
 
@@ -1483,11 +1487,5 @@
   document.addEventListener('keydown', function(ev){ if (ev.key==='Escape') bmCloseDrawer(); });
 
   renderBm();
-
-  /* restaurar la vista guardada (Plan / Bitácora) — recién ahora, con bmState
-     ya cargado, para no llamar renderBm() contra datos todavía sin definir */
-  var savedMode = 'plan';
-  try { savedMode = localStorage.getItem(MODE_KEY) || 'plan'; } catch(e){}
-  setMode(savedMode);
 })();
 </script>
