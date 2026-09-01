@@ -18,6 +18,8 @@
     --todo-soft:#e7e6df;
     --unknown:#5b6b7a;
     --unknown-soft:#e2e8ec;
+    --eli5:#2d6e68;
+    --eli5-soft:#e2f0ee;
     --code-bg:#1b1e27;
     --code-fg:#e7e6df;
     --code-accent:#e0ac54;
@@ -41,6 +43,8 @@
       --todo-soft:#20232b;
       --unknown:#8fa9bf;
       --unknown-soft:#1c2731;
+      --eli5:#7fc9c0;
+      --eli5-soft:#122523;
       --code-bg:#0e0f13;
       --code-fg:#e7e6df;
       --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 20px rgba(0,0,0,.35);
@@ -62,18 +66,22 @@
     --todo-soft:#20232b;
     --unknown:#8fa9bf;
     --unknown-soft:#1c2731;
+    --eli5:#7fc9c0;
+    --eli5-soft:#122523;
     --code-bg:#0e0f13;
     --code-fg:#e7e6df;
     --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 20px rgba(0,0,0,.35);
   }
 
   *{box-sizing:border-box;}
+  html{ scroll-behavior:smooth; }
   body{
     margin:0;
     background:var(--paper);
     color:var(--ink);
     font-family:'IBM Plex Sans', system-ui, sans-serif;
     line-height:1.55;
+    font-size:15.5px;
     -webkit-font-smoothing:antialiased;
   }
   ::selection{ background:var(--accent-soft); }
@@ -87,22 +95,22 @@
 
   a{ color:var(--accent); }
 
-  .wrap{ max-width:880px; margin:0 auto; padding:0 22px 120px; }
+  .wrap{ max-width:880px; margin:0 auto; padding:0 18px 100px; }
 
-  /* progress rail */
+  /* sticky top bar: progress + timeline nav */
   .rail{
     position:sticky; top:0; z-index:20;
-    background:color-mix(in srgb, var(--paper) 88%, transparent);
+    background:color-mix(in srgb, var(--paper) 92%, transparent);
     backdrop-filter: blur(6px);
     border-bottom:1px solid var(--line);
   }
   .rail-inner{
-    max-width:880px; margin:0 auto; padding:10px 22px;
-    display:flex; align-items:center; gap:14px;
+    max-width:880px; margin:0 auto; padding:9px 18px 6px;
+    display:flex; align-items:center; gap:12px;
   }
   .rail-label{
     font-family:'IBM Plex Mono', monospace;
-    font-size:.72rem; letter-spacing:.06em; text-transform:uppercase;
+    font-size:.68rem; letter-spacing:.06em; text-transform:uppercase;
     color:var(--ink-soft); white-space:nowrap;
   }
   .rail-track{
@@ -111,63 +119,91 @@
   }
   .rail-fill{ height:100%; background:var(--accent); width:0%; transition:width .3s ease; }
   .rail-count{
-    font-family:'IBM Plex Mono', monospace; font-size:.78rem; color:var(--ink-soft);
+    font-family:'IBM Plex Mono', monospace; font-size:.74rem; color:var(--ink-soft);
     font-variant-numeric:tabular-nums; white-space:nowrap;
   }
+  .timeline-nav{
+    display:flex; gap:6px; overflow-x:auto; padding:2px 18px 10px;
+    -webkit-overflow-scrolling:touch; scrollbar-width:none;
+  }
+  .timeline-nav::-webkit-scrollbar{ display:none; }
+  .timeline-nav a{
+    flex-shrink:0; font-family:'IBM Plex Mono', monospace; font-size:.7rem;
+    padding:5px 11px; border-radius:99px; border:1px solid var(--line);
+    background:var(--paper-raised); color:var(--ink-soft); text-decoration:none;
+    white-space:nowrap; scroll-snap-align:start;
+  }
+  .timeline-nav a:active, .timeline-nav a:hover{ color:var(--accent); border-color:var(--accent); }
 
   /* header */
-  header.hero{ padding:56px 0 8px; }
+  header.hero{ padding:36px 0 8px; }
   .eyebrow{
     font-family:'IBM Plex Mono', monospace;
-    font-size:.76rem; letter-spacing:.09em; text-transform:uppercase;
-    color:var(--accent); display:flex; align-items:center; gap:8px; margin-bottom:14px;
+    font-size:.72rem; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--accent); display:flex; align-items:center; gap:8px; margin-bottom:12px;
   }
   .eyebrow::before{ content:'▚'; }
-  h1.title{ font-size:clamp(2.2rem, 5vw, 3.1rem); font-weight:600; }
+  h1.title{ font-size:clamp(2rem, 8vw, 3.1rem); font-weight:600; }
   .lede{
-    margin-top:16px; max-width:62ch; color:var(--ink-soft); font-size:1.06rem;
+    margin-top:14px; max-width:62ch; color:var(--ink-soft); font-size:1.02rem;
   }
   .lede strong{ color:var(--ink); font-weight:600; }
 
   .stat-row{
-    display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
-    margin-top:34px; background:var(--line); border:1px solid var(--line);
+    display:grid; grid-template-columns:repeat(2,1fr); gap:1px;
+    margin-top:26px; background:var(--line); border:1px solid var(--line);
     border-radius:10px; overflow:hidden;
   }
-  .stat{ background:var(--paper-raised); padding:16px 14px; }
+  .stat{ background:var(--paper-raised); padding:14px 12px; }
   .stat b{
-    display:block; font-family:'Fraunces', serif; font-size:1.7rem; font-weight:600;
+    display:block; font-family:'Fraunces', serif; font-size:1.55rem; font-weight:600;
   }
   .stat span{
-    font-family:'IBM Plex Mono', monospace; font-size:.68rem; letter-spacing:.04em;
+    font-family:'IBM Plex Mono', monospace; font-size:.64rem; letter-spacing:.03em;
     text-transform:uppercase; color:var(--ink-soft);
+  }
+  @media (min-width:640px){
+    .stat-row{ grid-template-columns:repeat(4,1fr); }
   }
 
   /* section framing */
-  section{ margin-top:64px; }
-  .section-head{ margin-bottom:22px; }
+  section{ margin-top:52px; scroll-margin-top:98px; }
+  .section-head{ margin-bottom:16px; }
   .section-kicker{
-    font-family:'IBM Plex Mono', monospace; font-size:.72rem; letter-spacing:.08em;
+    font-family:'IBM Plex Mono', monospace; font-size:.7rem; letter-spacing:.07em;
     text-transform:uppercase; color:var(--ink-soft); margin-bottom:6px; display:block;
   }
-  h2.section-title{ font-size:1.7rem; font-weight:600; }
-  .section-dek{ color:var(--ink-soft); margin-top:8px; max-width:64ch; font-size:.98rem; }
+  h2.section-title{ font-size:1.5rem; font-weight:600; }
+  .section-dek{ color:var(--ink-soft); margin-top:8px; max-width:64ch; font-size:.95rem; }
+
+  /* ELI5 */
+  .eli5{
+    margin:14px 0 4px; display:flex; gap:10px; align-items:flex-start;
+    background:var(--eli5-soft); border:1px solid var(--eli5);
+    border-radius:10px; padding:11px 13px; font-size:.9rem;
+  }
+  .eli5-tag{
+    font-family:'IBM Plex Mono', monospace; font-size:.62rem; letter-spacing:.05em;
+    text-transform:uppercase; color:var(--eli5); background:var(--paper-raised);
+    border:1px solid var(--eli5); border-radius:6px; padding:2px 6px; flex-shrink:0; margin-top:1px;
+  }
+  .eli5 p{ margin:0; color:var(--ink); }
 
   /* critical callout */
   .critical{
     border:1px solid var(--accent);
     background:var(--accent-soft);
-    border-radius:12px; padding:22px 24px; box-shadow:var(--shadow);
+    border-radius:12px; padding:18px 18px; box-shadow:var(--shadow);
   }
-  .critical h3{ font-size:1.2rem; color:var(--accent); display:flex; gap:10px; align-items:baseline; }
+  .critical h3{ font-size:1.15rem; color:var(--accent); display:flex; gap:9px; align-items:baseline; }
   .critical h3::before{ content:'⚠'; font-family:'IBM Plex Sans'; }
   .critical p{ margin:12px 0 0; color:var(--ink); }
-  .critical .fine{ color:var(--ink-soft); font-size:.9rem; }
+  .critical .fine{ color:var(--ink-soft); font-size:.87rem; }
 
-  .tabs{ display:flex; gap:6px; margin-top:18px; flex-wrap:wrap; }
+  .tabs{ display:flex; gap:6px; margin-top:16px; flex-wrap:wrap; }
   .tab-btn{
-    font-family:'IBM Plex Mono', monospace; font-size:.76rem; letter-spacing:.02em;
-    padding:6px 12px; border-radius:99px; border:1px solid var(--line);
+    font-family:'IBM Plex Mono', monospace; font-size:.74rem; letter-spacing:.02em;
+    padding:6px 11px; border-radius:99px; border:1px solid var(--line);
     background:var(--paper-raised); color:var(--ink-soft); cursor:pointer;
   }
   .tab-btn[aria-selected="true"]{ background:var(--ink); color:var(--paper); border-color:var(--ink); }
@@ -176,43 +212,44 @@
 
   pre{
     background:var(--code-bg); color:var(--code-fg);
-    border-radius:10px; padding:16px 18px; overflow-x:auto;
-    font-family:'IBM Plex Mono', monospace; font-size:.82rem; line-height:1.6;
+    border-radius:10px; padding:15px 16px; overflow-x:auto;
+    font-family:'IBM Plex Mono', monospace; font-size:.8rem; line-height:1.6;
     position:relative;
   }
   pre .cm{ color:#8b93a5; }
   pre .kw{ color:var(--code-accent); }
   .copy-btn{
-    position:absolute; top:10px; right:10px;
-    font-family:'IBM Plex Mono', monospace; font-size:.68rem; letter-spacing:.04em;
+    position:absolute; top:9px; right:9px;
+    font-family:'IBM Plex Mono', monospace; font-size:.64rem; letter-spacing:.03em;
     text-transform:uppercase; background:rgba(255,255,255,.08); color:var(--code-fg);
-    border:1px solid rgba(255,255,255,.18); border-radius:6px; padding:4px 9px; cursor:pointer;
+    border:1px solid rgba(255,255,255,.18); border-radius:6px; padding:4px 8px; cursor:pointer;
   }
   .copy-btn:hover{ background:rgba(255,255,255,.16); }
 
   code.inline{
-    font-family:'IBM Plex Mono', monospace; font-size:.86em;
-    background:var(--todo-soft); padding:.1em .4em; border-radius:5px;
+    font-family:'IBM Plex Mono', monospace; font-size:.85em;
+    background:var(--todo-soft); padding:.1em .35em; border-radius:5px;
+    word-break:break-word;
   }
 
   /* roadmap cards */
   .card{
     background:var(--paper-raised); border:1px solid var(--line); border-radius:14px;
-    padding:26px 26px 22px; box-shadow:var(--shadow); margin-bottom:22px;
+    padding:20px 18px 18px; box-shadow:var(--shadow); margin-bottom:18px;
   }
-  .card-top{ display:flex; align-items:flex-start; gap:16px; }
+  .card-top{ display:flex; align-items:flex-start; gap:14px; flex-wrap:wrap; }
   .card-num{
-    font-family:'Fraunces', serif; font-weight:600; font-size:1.5rem; color:var(--line);
+    font-family:'Fraunces', serif; font-weight:600; font-size:1.4rem; color:var(--line);
     line-height:1; min-width:2ch;
   }
-  .card-heading{ flex:1; }
-  .card-heading h3{ font-size:1.3rem; font-weight:600; }
+  .card-heading{ flex:1; min-width:140px; }
+  .card-heading h3{ font-size:1.2rem; font-weight:600; }
   .card-heading .path{
-    font-family:'IBM Plex Mono', monospace; font-size:.78rem; color:var(--ink-soft); margin-top:3px;
+    font-family:'IBM Plex Mono', monospace; font-size:.74rem; color:var(--ink-soft); margin-top:3px;
   }
   .pill{
-    font-family:'IBM Plex Mono', monospace; font-size:.68rem; letter-spacing:.05em;
-    text-transform:uppercase; padding:4px 10px; border-radius:99px; white-space:nowrap;
+    font-family:'IBM Plex Mono', monospace; font-size:.65rem; letter-spacing:.04em;
+    text-transform:uppercase; padding:4px 9px; border-radius:99px; white-space:nowrap;
     height:fit-content;
   }
   .pill.built{ background:var(--done-soft); color:var(--done); }
@@ -220,54 +257,64 @@
   .pill.todo{ background:var(--todo-soft); color:var(--todo); }
   .pill.unknown{ background:var(--unknown-soft); color:var(--unknown); }
 
-  .card p.purpose{ margin:16px 0 0; color:var(--ink); }
+  .card p.purpose{ margin:14px 0 0; color:var(--ink); }
 
-  .kv{ margin-top:18px; display:grid; gap:14px; }
-  .kv-row{ display:grid; grid-template-columns:150px 1fr; gap:14px; }
+  .kv{ margin-top:16px; display:grid; gap:13px; }
+  .kv-row{ display:grid; grid-template-columns:1fr; gap:3px; }
   .kv-row dt{
-    font-family:'IBM Plex Mono', monospace; font-size:.72rem; letter-spacing:.05em;
-    text-transform:uppercase; color:var(--ink-soft); padding-top:2px;
+    font-family:'IBM Plex Mono', monospace; font-size:.7rem; letter-spacing:.04em;
+    text-transform:uppercase; color:var(--ink-soft);
   }
-  .kv-row dd{ margin:0; font-size:.95rem; }
+  .kv-row dd{ margin:0; font-size:.93rem; }
   .kv-row dd.tech{ color:var(--ink-soft); }
+  @media (min-width:640px){
+    .kv-row{ grid-template-columns:140px 1fr; gap:14px; }
+    .kv-row dt{ padding-top:2px; }
+  }
 
   .flag{
-    margin-top:18px; display:flex; gap:12px; align-items:flex-start;
+    margin-top:16px; display:flex; gap:11px; align-items:flex-start;
     background:var(--progress-soft); border:1px solid var(--progress);
-    border-radius:10px; padding:14px 16px;
+    border-radius:10px; padding:13px 14px;
   }
-  .flag .flag-icon{ font-size:1.05rem; line-height:1.4; color:var(--progress); flex-shrink:0; }
-  .flag .flag-body{ font-size:.92rem; }
+  .flag .flag-icon{ font-size:1rem; line-height:1.4; color:var(--progress); flex-shrink:0; }
+  .flag .flag-body{ font-size:.9rem; }
   .flag .flag-body strong{ color:var(--progress); }
   .flag-label{
-    font-family:'IBM Plex Mono', monospace; font-size:.68rem; letter-spacing:.06em;
+    font-family:'IBM Plex Mono', monospace; font-size:.66rem; letter-spacing:.05em;
     text-transform:uppercase; color:var(--progress); display:block; margin-bottom:4px;
   }
 
-  .tasks{ margin-top:16px; border-top:1px dashed var(--line); padding-top:14px; }
-  .task{ display:flex; align-items:flex-start; gap:10px; padding:5px 0; font-size:.92rem; }
-  .task input{ margin-top:4px; accent-color:var(--accent); width:15px; height:15px; flex-shrink:0; }
+  .tasks{ margin-top:14px; border-top:1px dashed var(--line); padding-top:12px; }
+  .task{ display:flex; align-items:flex-start; gap:10px; padding:6px 0; font-size:.9rem; }
+  .task input{ margin-top:4px; accent-color:var(--accent); width:17px; height:17px; flex-shrink:0; }
+  .task label{ padding-top:1px; }
   .task label.done-text{ text-decoration:line-through; color:var(--ink-soft); }
 
-  @media (max-width:640px){
-    .stat-row{ grid-template-columns:repeat(2,1fr); }
-    .kv-row{ grid-template-columns:1fr; gap:4px; }
-    .card-top{ flex-direction:column; }
-  }
-
-  table.inventory{ width:100%; border-collapse:collapse; margin-top:16px; font-size:.9rem; }
+  table.inventory{ width:100%; border-collapse:collapse; margin-top:14px; font-size:.86rem; }
   table.inventory th, table.inventory td{
-    text-align:left; padding:9px 10px; border-bottom:1px solid var(--line);
+    text-align:left; padding:8px 9px; border-bottom:1px solid var(--line); vertical-align:top;
   }
   table.inventory th{
-    font-family:'IBM Plex Mono', monospace; font-size:.68rem; letter-spacing:.05em;
-    text-transform:uppercase; color:var(--ink-soft);
+    font-family:'IBM Plex Mono', monospace; font-size:.64rem; letter-spacing:.04em;
+    text-transform:uppercase; color:var(--ink-soft); white-space:nowrap;
   }
   .scrollx{ overflow-x:auto; }
+  .quote{
+    display:block; margin-top:4px; font-size:.85em; color:var(--ink-soft); font-style:italic;
+  }
 
   footer.end{
-    margin-top:80px; padding-top:26px; border-top:1px solid var(--line);
-    color:var(--ink-soft); font-size:.88rem;
+    margin-top:64px; padding-top:22px; border-top:1px solid var(--line);
+    color:var(--ink-soft); font-size:.85rem;
+  }
+
+  @media (min-width:640px){
+    .wrap{ padding:0 22px 120px; }
+    header.hero{ padding:56px 0 8px; }
+    section{ margin-top:64px; }
+    .card{ padding:26px 26px 22px; }
+    .card-top{ flex-wrap:nowrap; }
   }
 </style>
 
@@ -277,6 +324,17 @@
     <div class="rail-track"><div class="rail-fill" id="railFill"></div></div>
     <span class="rail-count" id="railCount">0/0</span>
   </div>
+  <nav class="timeline-nav" aria-label="Navegación de la bitácora">
+    <a href="#bug">Bug del 404</a>
+    <a href="#arquitectura">Base técnica</a>
+    <a href="#malla">① Malla</a>
+    <a href="#documentos">② Documentos</a>
+    <a href="#empresas">③ Empresas</a>
+    <a href="#calendario-faq">④ Calendario/FAQ</a>
+    <a href="#wikiprofes">⑤ WikiProfes</a>
+    <a href="#inventario">Lo que falta saber</a>
+    <a href="#siguiente">Siguientes pasos</a>
+  </nav>
 </div>
 
 <div class="wrap">
@@ -286,15 +344,14 @@
     <h1 class="title">Bitácora de obra</h1>
     <p class="lede">
       Un plan técnico para terminar el sitio del CEIC, sección por sección. Está pensado para
-      <strong>volver a él</strong>: marca tareas a medida que las cierras, y úsalo como orden del día
-      cuando nos sentemos a construir cada parte. Prioridad y hallazgos según lo que revisamos juntos
-      el 31 de agosto de 2026.
+      <strong>volver a él</strong>: marca tareas a medida que las cierras, usa la barra de arriba para
+      saltar entre secciones, y úsalo como orden del día cuando nos sentemos a construir cada parte.
     </p>
 
     <div class="stat-row">
-      <div class="stat"><b>13</b><span>Secciones enlazadas</span></div>
-      <div class="stat"><b>1</b><span>Bug crítico de hosting</span></div>
-      <div class="stat"><b>5</b><span>Confirmadas construidas</span></div>
+      <div class="stat"><b>7</b><span>Funcionando de verdad</span></div>
+      <div class="stat"><b>3</b><span>Página lista, falta contenido</span></div>
+      <div class="stat"><b>4</b><span>En construcción real</span></div>
       <div class="stat"><b>0</b><span>Acceso a repo aún</span></div>
     </div>
   </header>
@@ -303,36 +360,40 @@
     <div class="section-head">
       <span class="section-kicker">Antes que nada</span>
       <h2 class="section-title">El sitio 404 en cualquier ruta que no sea "/"</h2>
-      <p class="section-dek">Esto no es contenido sin construir — es un problema de configuración del hosting, y bloquea todo lo demás.</p>
+      <p class="section-dek">No es contenido sin construir — es una configuración del hosting, y bloquea el acceso directo hasta a las secciones que ya funcionan.</p>
+    </div>
+
+    <div class="eli5">
+      <span class="eli5-tag">ELI5</span>
+      <p>Si mandas por WhatsApp el link de una sección puntual (no el de la portada), a quien lo abre le sale una página en blanco con error. No es que falte programar nada ahí — es un interruptor mal puesto en el hosting. Se arregla en minutos, no en días.</p>
     </div>
 
     <div class="critical">
       <h3>Falta el fallback de SPA</h3>
       <p>
-        Confirmé esto de dos formas independientes: pedir <code class="inline">https://ceicusach.cl/wikiprofes</code> directo
-        devuelve <strong>HTTP 404 del servidor</strong> (no es un 404 dibujado por React), y al abrirlo en un navegador
+        Confirmado de dos formas independientes: pedir <code class="inline">https://ceicusach.cl/wikiprofes</code> directo
+        devuelve <strong>HTTP 404 del servidor</strong> (no un 404 dibujado por React), y al abrirlo en un navegador
         la página queda en blanco con errores 404 en consola para los recursos de esa ruta. El sitio es una SPA
         (React + Vite, ruteo en el cliente) — funciona si navegas haciendo clic en los links desde "/", pero
         <strong>cualquier acceso directo</strong> a una ruta interna (recargar la página, un link compartido,
-        un resultado de Google, un marcador) muere en un 404 real.
+        un resultado de Google, un marcador) muere en un 404 real, incluso para secciones que ya tienen contenido
+        real como Nosotros o Programa.
       </p>
       <p class="fine">
-        Impacto: nadie puede compartir un link a WikiProfes, nadie puede recargar sin perder la página,
-        y Google no puede indexar nada más que el Inicio.
+        Impacto: nadie puede compartir un link directo, nadie puede recargar sin perder la página, y Google no
+        puede indexar nada más que el Inicio.
       </p>
       <p>
         <strong>El arreglo:</strong> decirle al hosting que sirva <code class="inline">index.html</code> para
-        cualquier ruta que no sea un archivo estático, y deja que React Router (o lo que estén usando)
-        resuelva la página en el navegador.
+        cualquier ruta que no sea un archivo estático, y dejar que el router resuelva la página en el navegador.
       </p>
       <p class="fine">
         <strong>Confirmado con tus propios headers:</strong> al recargar <code class="inline">/wikiprofes</code>
         la respuesta trae <code class="inline">server: cloudflare</code> y <code class="inline">cf-ray</code>,
         con <code class="inline">content-length: 0</code> — un 404 con cuerpo vacío, típico de Cloudflare Pages
         cuando no hay ruta que haga match y no existe un <code class="inline">_redirects</code> de respaldo.
-        Empieza por la pestaña <strong>Cloudflare Pages</strong> de abajo. Si el dominio en realidad está
-        proxied por Cloudflare hacia otro origen (Vercel/Netlify detrás), revisa el panel de hosting real para
-        confirmarlo — pero el vacío del cuerpo apunta directo a Pages.
+        Empieza por la pestaña Cloudflare Pages de abajo; si el dominio en realidad está proxied por Cloudflare
+        hacia otro origen, el panel de hosting real lo confirma, pero el cuerpo vacío apunta directo a Pages.
       </p>
 
       <div class="tabs" role="tablist">
@@ -347,7 +408,6 @@
         <pre><button class="copy-btn" data-copy>Copiar</button><span class="cm"># public/_redirects</span>
 /*  /index.html  200</pre>
       </div>
-
       <div class="tab-panel" data-panel="vercel">
         <p class="fine">Crea <code class="inline">vercel.json</code> en la raíz del proyecto:</p>
         <pre><button class="copy-btn" data-copy>Copiar</button><span class="cm">// vercel.json</span>
@@ -367,9 +427,9 @@
 }</pre>
       </div>
 
-      <p class="fine" style="margin-top:16px;">
-        Cómo verificar que quedó bien: recarga <code class="inline">ceicusach.cl/wikiprofes</code> directo en una
-        pestaña nueva (no navegando desde el Inicio). Si carga el contenido en vez de quedar en blanco, está arreglado.
+      <p class="fine" style="margin-top:14px;">
+        Cómo verificar: recarga <code class="inline">ceicusach.cl/wikiprofes</code> directo en una pestaña nueva
+        (no navegando desde el Inicio). Si carga el contenido en vez de quedar en blanco, está arreglado.
       </p>
     </div>
   </section>
@@ -378,7 +438,12 @@
     <div class="section-head">
       <span class="section-kicker">Antes de construir</span>
       <h2 class="section-title">Cómo mantener esto sin que se vuelva un problema</h2>
-      <p class="section-dek">La base (React + Vite + Tailwind, ruteo en cliente) está bien elegida — sígan con eso. Dos decisiones de arquitectura evitan trabajo doble más adelante.</p>
+      <p class="section-dek">La base (React + Vite + Tailwind, ruteo en cliente) está bien elegida — sigan con eso. Tres decisiones evitan trabajo doble más adelante.</p>
+    </div>
+
+    <div class="eli5">
+      <span class="eli5-tag">ELI5</span>
+      <p>Tres decisiones chicas ahora ahorran mucho trabajo repetido después: usar un solo componente para las páginas parecidas, compartir la lista de ramos entre BuscaCursos y la Malla, y aprovechar que ya se está usando el truco de "mandar a una carpeta de Drive" para lo que no vale la pena construir a mano.</p>
     </div>
 
     <div class="card">
@@ -386,23 +451,32 @@
         <div class="kv-row">
           <dt>01 — Contenido</dt>
           <dd>
-            Noticias, Actas, Transparencia, Documentación y FAQ son, en el fondo, <em>la misma estructura</em>:
-            una lista de entradas con fecha, título y a veces un PDF adjunto. Constrúyela <strong>una sola vez</strong>
-            como un componente "lista de documentos" que lee de un manifiesto de datos (JSON o carpeta de Markdown),
-            y las cinco secciones se vuelven configuración, no código nuevo. Esto también importa porque quien
-            va a actualizar Noticias el próximo semestre probablemente no sea quien programó el sitio —
-            mientras más simple sea agregar una entrada (editar un archivo, no tocar JSX), más se va a mantener al día.
+            Noticias, Actas, Transparencia y Documentación son, en el fondo, <em>la misma estructura</em>:
+            una lista de entradas con fecha, título y a veces un link o PDF adjunto. Constrúyela
+            <strong>una sola vez</strong> como un componente "lista de entradas" que lee de un manifiesto de datos,
+            y esas secciones se vuelven configuración, no código nuevo cada vez. Importa doblemente porque quien
+            actualice Noticias el próximo semestre probablemente no sea quien programó el sitio.
           </dd>
         </div>
         <div class="kv-row">
-          <dt>02 — Ya existe el dataset, úsenlo</dt>
+          <dt>02 — Un solo catálogo de ramos</dt>
           <dd>
-            Revisé el HTML de BuscaCursos que me pasaste: tiene un arreglo <code class="inline">SECTIONS</code> embebido
-            con <strong>226 secciones → 54 ramos únicos</strong>, mención Administración (códigos 352xxx),
-            horario 2026-2, con nivel/semestre, créditos SCT y área por ramo. Eso ya es el catálogo de cursos —
-            no hay que "definir" uno nuevo, hay que <strong>deduplicar por código</strong> y reusarlo como fuente
-            para Malla Interactiva, en vez de escribir los mismos 54 ramos a mano por segunda vez en otro proyecto.
-            Ojo: ese dataset cubre solo mención Administración — ver la nota de alcance en la tarjeta de Malla.
+            BuscaCursos ya trae el catálogo de ramos de ambas menciones (<code class="inline">PROGRAMS.ingeco</code>
+            y <code class="inline">PROGRAMS.economia</code>). Malla Interactiva debería <strong>leer ese mismo
+            dataset</strong>, no armar uno paralelo — así un cambio de malla se actualiza en un solo lugar en vez
+            de en dos proyectos que se pueden desincronizar.
+          </dd>
+        </div>
+        <div class="kv-row">
+          <dt>03 — El patrón "carpeta de Drive" ya funciona, úsenlo a propósito</dt>
+          <dd>
+            Al revisar las páginas guardadas encontré que Actas, Apuntes y parte de Transparencia ya resuelven
+            el contenido enlazando a una carpeta de Google Drive compartida en vez de construir un visor dentro
+            del sitio. Es una decisión válida para una organización estudiantil — mucho más barata que programar
+            un visor de PDFs, y quien sube el archivo no necesita saber nada de código. Vale la pena mantenerla
+            a propósito (no como algo "provisorio" que hay que reemplazar) para Noticias y Documentación también,
+            reservando componentes nuevos solo para lo que de verdad necesita interactividad, como Malla o el
+            foro de preguntas de Transparencia.
           </dd>
         </div>
       </div>
@@ -413,136 +487,190 @@
     <div class="section-head">
       <span class="section-kicker">El plan, en tu orden de prioridad</span>
       <h2 class="section-title">Sección por sección</h2>
-      <p class="section-dek">Marcado según lo que ya vi construido (contenido real visible desde el Inicio) versus lo que solo aparece como link en el footer, sin evidencia de contenido propio.</p>
+      <p class="section-dek">Actualizado con el HTML real de cada página que guardaste — ya no son suposiciones. Cada tarjeta dice exactamente qué vi.</p>
     </div>
 
     <!-- 1 Malla Interactiva -->
-    <div class="card">
+    <div class="card" id="malla">
       <div class="card-top">
         <span class="card-num">01</span>
         <div class="card-heading">
           <h3>Malla Interactiva</h3>
           <div class="path">/malla</div>
         </div>
-        <span class="pill partial">Alcance confirmado: ambas menciones</span>
+        <span class="pill todo">En construcción — confirmado</span>
       </div>
+
+      <div class="eli5">
+        <span class="eli5-tag">ELI5</span>
+        <p>Es un mapa de los ramos de la carrera: qué se toma en cada semestre y qué ramo hay que haber aprobado antes de otro. Hoy la página solo dice "en construcción". Los datos de los ramos ya existen en BuscaCursos — falta la parte de "qué ramo pide qué otro ramo" y armar la pantalla.</p>
+      </div>
+
       <p class="purpose">
-        Malla curricular de Ingeniería Comercial navegable — <strong>mención Administración y mención Economía</strong>,
-        confirmaste que no hay ningún diagrama de prerrequisitos ya hecho, así que esto se construye desde cero
-        en cuanto a prerrequisitos, pero no desde cero en cuanto a datos de ramos.
+        Malla curricular navegable — <strong>mención Administración y mención Economía</strong>. Confirmaste que
+        no hay ningún diagrama de prerrequisitos ya hecho en ningún lado, así que eso se construye desde cero;
+        los datos de ramos, no.
       </p>
       <dl class="kv">
         <div class="kv-row"><dt>Qué existe hoy</dt><dd>
-          Nada en <code class="inline">/malla</code> todavía. Pero ya identifiqué las dos fuentes oficiales:
-          <a href="https://fae.usach.cl/cica/" target="_blank" rel="noopener noreferrer">fae.usach.cl/cica</a>
-          (mención Administración) y
-          <a href="https://fae.usach.cl/cice/" target="_blank" rel="noopener noreferrer">fae.usach.cl/cice</a>
-          (mención Economía) — cada una lista los ramos por semestre (10 semestres) y enlaza al PDF de programa
-          de cada ramo, además de un PDF completo descargable por mención. Revisé ese PDF completo de
-          Administración: es una tabla por semestre, <strong>sin diagrama de prerrequisitos</strong> — confirma
-          lo que dijiste, no hay nada ya hecho que reusar ahí. BuscaCursos, además, ya trae los 54 ramos de
-          Administración con nivel y SCT reales del horario 2026-2.
-        </dd></div>
-        <div class="kv-row"><dt>Enfoque técnico</dt><dd class="tech">
-          1) Deduplicar <code class="inline">SECTIONS</code> de BuscaCursos por código → catálogo base de
-          Administración; armar el equivalente para Economía desde fae.usach.cl/cice (esa mención no está en
-          BuscaCursos todavía). 2) Los prerrequisitos no están en ninguna fuente consolidada — solo pueden salir
-          de cada PDF de programa de asignatura individual (campo "requisitos"), ~100 PDFs entre ambas menciones.
-          Es scripteable (descargar + extraer ese campo de cada PDF), no manual uno por uno, pero es trabajo real
-          que hay que presupuestar. 3) Grilla por semestre y mención, resalta prerrequisitos al hacer clic — sin
-          librería de grafos para la v1.
+          El HTML real de <code class="inline">/malla</code> dice, textual:
+          <span class="quote">"En construcción. Estamos construyendo la malla interactiva. Pronto vas a poder
+          revisar los ramos de la carrera, sus prerrequisitos y marcar tu propio avance semestre a semestre."</span>
+          Es un placeholder honesto y bien escrito, no una ruta rota. Las dos fuentes oficiales de la malla siguen
+          siendo <a href="https://fae.usach.cl/cica/" target="_blank" rel="noopener noreferrer">fae.usach.cl/cica</a>
+          (Administración) y <a href="https://fae.usach.cl/cice/" target="_blank" rel="noopener noreferrer">fae.usach.cl/cice</a>
+          (Economía) — cada una lista los ramos por semestre y enlaza al PDF de programa de cada uno, pero sin
+          diagrama de prerrequisitos en ninguna.
         </dd></div>
       </dl>
-      <div class="flag">
-        <span class="flag-icon">⚑</span>
+
+      <div class="flag" style="background:var(--done-soft); border-color:var(--done);">
+        <span class="flag-icon" style="color:var(--done);">◆</span>
         <div class="flag-body">
-          <span class="flag-label">Importante — no dar por buenos estos códigos todavía</span>
-          Los códigos de ramo exactos que cito de fae.usach.cl/cica y /cice los saqué con una herramienta que
-          <strong>resume el HTML con un modelo chico</strong>, no con un scrape literal — sirven para diagnosticar
-          y planificar, pero hay riesgo real de que un dígito esté transcrito mal. <strong>No escribas ni una
-          línea de código contra estos números todavía</strong>: antes de construir el dataset de la malla,
-          hay que volver a sacar los códigos con un scrape real (yo, con acceso al repo, leyendo el HTML
-          directo) para no arrastrar un typo a todo el catálogo de ramos.
+          <span class="flag-label" style="color:var(--done);">Buena noticia: los datos de ramos ya existen</span>
+          BuscaCursos separa el dato real en <code class="inline">PROGRAMS.ingeco</code> (Administración: 226
+          secciones → 54 ramos únicos, niveles 1–10 completos) y <code class="inline">PROGRAMS.economia</code>
+          (Economía: 67 secciones → 32 ramos únicos, pero <strong>solo nivel 3</strong> por ahora — los niveles 1–2
+          se comparten con Administración, y 4–10 probablemente faltan por cargar). Esto sale directo del dato de
+          la app, no de un resumen — es confiable para construir contra él. Ojo con los códigos: no es
+          "351 = Economía, 352 = Administración"; la mayoría de los ramos propios de Economía también usan el
+          rango 352xxx, y solo un grupo de ramos avanzados (Macroeconomía II, Econometría II, Práctica Profesional,
+          Trabajo de Titulación) usa 351xxx.
         </div>
       </div>
+
+      <div class="kv" style="margin-top:14px;">
+        <div class="kv-row"><dt>Enfoque técnico</dt><dd class="tech">
+          1) Deduplicar <code class="inline">PROGRAMS.ingeco.sections</code> y
+          <code class="inline">PROGRAMS.economia.sections</code> por código → catálogo base de ambas menciones.
+          2) Completar los niveles que faltan de Economía. 3) Los prerrequisitos no están en ninguna fuente
+          consolidada — solo salen de cada PDF de programa de asignatura individual (campo "requisitos"). Es
+          scripteable, no manual, pero es trabajo real a presupuestar. 4) Grilla por semestre y mención, resalta
+          prerrequisitos al hacer clic — sin librería de grafos para la v1.
+        </dd></div>
+      </div>
       <div class="tasks">
-        <div class="task"><input type="checkbox" data-task="malla-1" id="malla-1"><label for="malla-1">Deduplicar SECTIONS de BuscaCursos → catálogo base mención Administración</label></div>
-        <div class="task"><input type="checkbox" data-task="malla-2" id="malla-2"><label for="malla-2">Armar catálogo de ramos mención Economía desde fae.usach.cl/cice</label></div>
-        <div class="task"><input type="checkbox" data-task="malla-3" id="malla-3"><label for="malla-3">Verificar códigos de ramo con un scrape real (no el resumen de la IA)</label></div>
-        <div class="task"><input type="checkbox" data-task="malla-4" id="malla-4"><label for="malla-4">Script para extraer "requisitos" de los ~100 PDF de programa</label></div>
+        <div class="task"><input type="checkbox" data-task="malla-1" id="malla-1" checked disabled><label for="malla-1" class="done-text">Catálogo base mención Administración — ya está en BuscaCursos (54 ramos)</label></div>
+        <div class="task"><input type="checkbox" data-task="malla-2" id="malla-2" checked disabled><label for="malla-2" class="done-text">Catálogo base mención Economía — arrancado en BuscaCursos (32 ramos, nivel 3)</label></div>
+        <div class="task"><input type="checkbox" data-task="malla-2b" id="malla-2b"><label for="malla-2b">Completar niveles 4–10 de Economía en el dataset</label></div>
+        <div class="task"><input type="checkbox" data-task="malla-4" id="malla-4"><label for="malla-4">Script para extraer "requisitos" de los PDF de programa (ambas menciones)</label></div>
         <div class="task"><input type="checkbox" data-task="malla-5" id="malla-5"><label for="malla-5">Grilla por semestre y mención + resaltado de prerrequisitos</label></div>
       </div>
     </div>
 
     <!-- 2 Noticias / Actas / Transparencia / Documentación -->
-    <div class="card">
+    <div class="card" id="documentos">
       <div class="card-top">
         <span class="card-num">02</span>
         <div class="card-heading">
           <h3>Noticias · Actas · Transparencia · Documentación</h3>
           <div class="path">/noticias · /actas · /transparencia · /documentacion</div>
         </div>
-        <span class="pill todo">Sin construir</span>
+        <span class="pill partial">Más avanzado de lo que pensaba</span>
       </div>
+
+      <div class="eli5">
+        <span class="eli5-tag">ELI5</span>
+        <p>De estas cuatro, dos ya funcionan de verdad (Actas y la parte de plata de Transparencia — mandan a una carpeta de Drive), una está a medias (Documentación: un documento real, otro "próximamente"), y solo Noticias todavía no tiene nada. Es mucho menos trabajo pendiente de lo que parecía al principio.</p>
+      </div>
+
       <p class="purpose">
-        Cuatro secciones, un solo componente: listas de entradas fechadas, algunas con PDF adjunto.
-        Comunican que la mesa es activa y transparente — pero una página vacía comunica lo contrario, así que
-        no conviene publicarlas hasta tener contenido real para cada una.
+        Revisé el HTML real de las cuatro y el panorama cambió bastante respecto al plan original: no son cuatro
+        páginas vacías, son tres estados distintos.
       </p>
+
       <dl class="kv">
-        <div class="kv-row"><dt>Qué existe hoy</dt><dd>Solo links en el footer, sin contenido visible.</dd></div>
+        <div class="kv-row"><dt>Actas — funciona</dt><dd>
+          Texto real: <span class="quote">"Todas las actas se guardan en una carpeta compartida de Google Drive."</span>
+          con un botón "Ver actas". No hay nada que construir acá salvo, quizás, revisar que el link a la carpeta
+          siga vigente y con los permisos correctos.
+        </dd></div>
+        <div class="kv-row"><dt>Transparencia — a medias</dt><dd>
+          La parte de plata ya funciona igual que Actas: <span class="quote">"El detalle de ingresos y gastos se
+          publica en una carpeta compartida de Google Drive."</span> Pero tiene una segunda parte, un "Foro de
+          preguntas", que sí dice explícitamente <span class="quote">"En construcción. Estamos habilitando el foro
+          de preguntas."</span> — esa es la única pieza nueva que hay que programar aquí: un formulario público con
+          respuesta pública de la Secretaría de Finanzas.
+        </dd></div>
+        <div class="kv-row"><dt>Documentación — a medias</dt><dd>
+          El "Estatuto CEIC Ingeniería Comercial" ya tiene su link real ("Ver"). El segundo ítem, "Instructivo de
+          toma de ramos", dice <span class="quote">"Próximamente"</span> — falta escribir esa guía y enlazarla, no
+          construir nada nuevo en código.
+        </dd></div>
+        <div class="kv-row"><dt>Noticias — sin construir</dt><dd>
+          Esta sí es un placeholder completo: <span class="quote">"En construcción. Estamos preparando la sección
+          de noticias."</span> Es la única de las cuatro que necesita un componente nuevo de verdad.
+        </dd></div>
         <div class="kv-row"><dt>Enfoque técnico</dt><dd class="tech">
-          Un componente "lista de documentos" (fecha, título, resumen, PDF opcional) alimentado por una carpeta
-          de Markdown o un manifiesto JSON. Noticias = feed corto; Actas = minuta + PDF; Transparencia = tabla
-          presupuesto vs. gasto + PDF por periodo; Documentación = estatutos y reglamentos, mayormente estáticos.
+          Para Noticias: el componente "lista de entradas" de la nota de arquitectura #01 (fecha, título, resumen,
+          link opcional). Para el foro de Transparencia: un formulario simple (pregunta + nombre opcional) con una
+          vista de respuestas públicas — sin necesidad de cuentas de usuario si no quieren pedir login. Actas y la
+          parte de plata de Transparencia: no tocar, ya funcionan.
         </dd></div>
         <div class="kv-row"><dt>Necesito de ti</dt><dd>
-          PDFs de actas existentes, cifras/reportes de transparencia, estatutos vigentes, y al menos 3–5 noticias
-          para no lanzar la sección vacía. También: ¿Actas y Transparencia son públicas para cualquiera, o solo
-          para socios del CEIC? Cambia si necesitamos login.
+          Para Noticias: al menos 3–5 noticias reales para no lanzar la sección vacía. Para el foro de
+          Transparencia: si quieren moderar las preguntas antes de publicarlas o que salgan directo. Para
+          Documentación: el texto del instructivo de toma de ramos.
         </dd></div>
       </dl>
       <div class="tasks">
-        <div class="task"><input type="checkbox" data-task="doc-1" id="doc-1"><label for="doc-1">Definir si Actas/Transparencia requieren acceso restringido</label></div>
-        <div class="task"><input type="checkbox" data-task="doc-2" id="doc-2"><label for="doc-2">Reunir PDFs de actas y cifras de transparencia existentes</label></div>
-        <div class="task"><input type="checkbox" data-task="doc-3" id="doc-3"><label for="doc-3">Construir el componente "lista de documentos" reutilizable</label></div>
-        <div class="task"><input type="checkbox" data-task="doc-4" id="doc-4"><label for="doc-4">Redactar 3–5 noticias para el lanzamiento</label></div>
+        <div class="task"><input type="checkbox" data-task="doc-0a" id="doc-0a" checked disabled><label for="doc-0a" class="done-text">Actas — confirmado funcionando (vía Drive)</label></div>
+        <div class="task"><input type="checkbox" data-task="doc-0b" id="doc-0b" checked disabled><label for="doc-0b" class="done-text">Transparencia (rendiciones) — confirmado funcionando (vía Drive)</label></div>
+        <div class="task"><input type="checkbox" data-task="doc-1" id="doc-1"><label for="doc-1">Definir moderación del foro de preguntas de Transparencia</label></div>
+        <div class="task"><input type="checkbox" data-task="doc-2" id="doc-2"><label for="doc-2">Construir el foro de preguntas de Transparencia</label></div>
+        <div class="task"><input type="checkbox" data-task="doc-3" id="doc-3"><label for="doc-3">Escribir el instructivo de toma de ramos (Documentación)</label></div>
+        <div class="task"><input type="checkbox" data-task="doc-4" id="doc-4"><label for="doc-4">Construir el componente "lista de entradas" para Noticias</label></div>
+        <div class="task"><input type="checkbox" data-task="doc-5" id="doc-5"><label for="doc-5">Redactar 3–5 noticias para el lanzamiento</label></div>
       </div>
     </div>
 
     <!-- 3 WikiEmpresas / Convenios -->
-    <div class="card">
+    <div class="card" id="empresas">
       <div class="card-top">
         <span class="card-num">03</span>
         <div class="card-heading">
           <h3>WikiEmpresas · Convenios</h3>
           <div class="path">/wikiempresas · /convenios</div>
         </div>
-        <span class="pill todo">Sin construir</span>
+        <span class="pill partial">Convenios solo necesita datos</span>
       </div>
-      <p class="purpose">
-        El mismo patrón de WikiProfes (ficha + buscador), aplicado a empresas: convenios de práctica,
-        descuentos y beneficios para estudiantes.
-      </p>
+
+      <div class="eli5">
+        <span class="eli5-tag">ELI5</span>
+        <p>WikiEmpresas es la versión de WikiProfes pero para empresas donde la gente hace práctica — hay que construirla entera. Convenios es distinto: la página ya está lista y bien hecha, con un mensaje claro de "todavía no hay convenios" — solo falta cargarle datos reales.</p>
+      </div>
+
+      <p class="purpose">El mismo patrón de WikiProfes (ficha + buscador), aplicado a empresas: convenios de práctica, descuentos y beneficios para estudiantes.</p>
       <dl class="kv">
-        <div class="kv-row"><dt>Qué existe hoy</dt><dd>El link en el footer, y ya vimos que la ruta tiene su propio componente en el bundle (probablemente un placeholder) — falta confirmar qué muestra hoy.</dd></div>
+        <div class="kv-row"><dt>WikiEmpresas — sin construir</dt><dd>
+          Texto real: <span class="quote">"En construcción. Estamos preparando WikiEmpresas. Pronto subiremos el
+          listado de empresas y las reseñas de estudiantes."</span> Página real la que hay, contenido no.
+        </dd></div>
+        <div class="kv-row"><dt>Convenios — página lista, sin datos</dt><dd>
+          Distinto: no dice "en construcción". Dice <span class="quote">"Aún no hay convenios publicados. Estamos
+          gestionando descuentos y alianzas para la comunidad estudiantil."</span> Es un estado vacío bien
+          redactado — probablemente el componente que muestra la lista ya está listo para recibir datos, solo
+          nunca se le cargó ninguno. Habría que confirmarlo mirando el código, pero por cómo está escrito el
+          mensaje no parece una ruta a medio programar.
+        </dd></div>
         <div class="kv-row"><dt>Enfoque técnico</dt><dd class="tech">
-          Dos patrones de tarjeta ya construidos para reusar: WikiProfes resolvió ficha + buscador + 202 registros
-          para "una persona con datos"; la grilla de directiva en Nosotros (tarjeta con foto cuadrada, rol en
-          mayúsculas, nombre y lista de responsabilidades) calza casi literal con "una empresa con datos" si no
-          necesitas buscador. Cambia el modelo (empresa, rubro, tipo de convenio, beneficio, contacto) en vez de
+          Dos patrones de tarjeta ya construidos para reusar en WikiEmpresas: WikiProfes resolvió ficha + buscador
+          + 202 registros para "una persona con datos"; la grilla de directiva en Nosotros (foto cuadrada, rol en
+          mayúsculas, nombre, lista de responsabilidades) calza casi literal con "una empresa con datos" si no
+          hace falta buscador. Cambia el modelo (empresa, rubro, tipo de convenio, beneficio, contacto) en vez de
           reescribir la UI desde cero.
         </dd></div>
-        <div class="kv-row"><dt>Necesito de ti</dt><dd>El listado de convenios/empresas que la mesa ya maneja (probablemente existe en una planilla interna).</dd></div>
+        <div class="kv-row"><dt>Necesito de ti</dt><dd>El listado de convenios/empresas que la mesa ya maneja (probablemente existe en una planilla interna) — esto por sí solo probablemente activa Convenios sin tocar código.</dd></div>
       </dl>
       <div class="tasks">
+        <div class="task"><input type="checkbox" data-task="emp-0" id="emp-0" checked disabled><label for="emp-0" class="done-text">Confirmado: Convenios ya tiene página y estado vacío, solo falta contenido</label></div>
         <div class="task"><input type="checkbox" data-task="emp-1" id="emp-1"><label for="emp-1">Levantar el listado actual de convenios/empresas</label></div>
-        <div class="task"><input type="checkbox" data-task="emp-2" id="emp-2"><label for="emp-2">Adaptar el componente de WikiProfes al modelo de empresas</label></div>
+        <div class="task"><input type="checkbox" data-task="emp-2" id="emp-2"><label for="emp-2">Adaptar el componente de WikiProfes/Nosotros al modelo de empresas (WikiEmpresas)</label></div>
       </div>
     </div>
 
     <!-- 4 Calendario / FAQ -->
-    <div class="card">
+    <div class="card" id="calendario-faq">
       <div class="card-top">
         <span class="card-num">04</span>
         <div class="card-heading">
@@ -551,21 +679,28 @@
         </div>
         <span class="pill partial">Calendario listo — falta FAQ</span>
       </div>
-      <p class="purpose">
-        Calendario ya está construido y con harto detalle. Solo queda FAQ, que sigue siendo la página más rápida de cerrar.
-      </p>
+
+      <div class="eli5">
+        <span class="eli5-tag">ELI5</span>
+        <p>El calendario de fechas importantes del semestre ya está listo y con buen detalle. Solo falta la sección de preguntas frecuentes, que hoy sigue diciendo "en construcción".</p>
+      </div>
+
+      <p class="purpose">Calendario ya está construido y con harto detalle. Solo queda FAQ, que sigue siendo la página más rápida de cerrar.</p>
       <dl class="kv">
-        <div class="kv-row"><dt>Qué existe hoy</dt><dd>
-          <strong>Calendario: construido y confirmado.</strong> Fechas del segundo semestre 2026 para Ingeco
-          Diurno y Prosecución, en 7 bloques: matrícula y toma de ramos, período académico, evaluaciones (PEP1/PEP2),
-          trámites académicos, feriados y recesos, examen de grado y tesis. Contenido curado a mano, con fechas
-          exactas y notas por evento — no es un embed de Google Calendar, es una lista propia bien armada.
-          FAQ: sigue sin evidencia de contenido.
+        <div class="kv-row"><dt>Calendario — confirmado</dt><dd>
+          Fechas del segundo semestre 2026 para Ingeco Diurno y Prosecución, en 7 bloques: matrícula y toma de
+          ramos, período académico, evaluaciones (PEP1/PEP2), trámites académicos, feriados y recesos, examen de
+          grado y tesis. Contenido curado a mano, con fechas exactas y notas por evento — no un embed de Google
+          Calendar, una lista propia bien armada.
+        </dd></div>
+        <div class="kv-row"><dt>FAQ — sin construir</dt><dd>
+          Texto real: <span class="quote">"En construcción. Estamos preparando las preguntas frecuentes del
+          sitio. Pronto vas a encontrar aquí las dudas más comunes sobre WikiProfes y el CEIC."</span>
         </dd></div>
         <div class="kv-row"><dt>Enfoque técnico</dt><dd class="tech">
           Calendario ya no necesita nada de arquitectura — como mucho, evaluar si conviene mover las fechas a un
-          JSON/Markdown separado del componente para que actualizarlas semestre a semestre no signifique tocar
-          código. FAQ: acordeón simple, sin backend.
+          JSON separado del componente para actualizarlas semestre a semestre sin tocar código. FAQ: acordeón
+          simple, sin backend.
         </dd></div>
         <div class="kv-row"><dt>Necesito de ti</dt><dd>Solo lo de FAQ: las preguntas que más se repiten (probablemente ya las responden seguido por Instagram/WhatsApp).</dd></div>
       </dl>
@@ -577,98 +712,77 @@
     </div>
 
     <!-- 5 WikiProfes -->
-    <div class="card">
+    <div class="card" id="wikiprofes">
       <div class="card-top">
         <span class="card-num">05</span>
         <div class="card-heading">
           <h3>WikiProfes</h3>
           <div class="path">/wikiprofes</div>
         </div>
-        <span class="pill built">Construido</span>
+        <span class="pill built">Construido — confirmado</span>
       </div>
+
+      <div class="eli5">
+        <span class="eli5-tag">ELI5</span>
+        <p>Esta ya funciona de verdad y tiene hartas reseñas reales de profesores escritas por estudiantes. No hay que construirla — hay que revisarla, sobre todo pensando en si alguien puede escribir cualquier cosa sobre un profesor sin ningún filtro.</p>
+      </div>
+
       <p class="purpose">
-        Esta ya existe y funciona — el Inicio la describe con 202 fichas de profesores. La marcaste como
-        prioridad igual, así que la trato como <strong>pasada de pulido</strong>, no como construcción nueva.
+        Confirmado con el HTML real: 202 fichas de profesores, cada una con nombre, ramo, nota promedio y reseñas
+        de estudiantes con fecha. El contenido de las reseñas es real y, en algunos casos, bastante directo — hay
+        opiniones negativas específicas sobre profesores identificados por su nombre completo.
       </p>
       <dl class="kv">
         <div class="kv-row"><dt>Qué revisar</dt><dd class="tech">
-          Rendimiento del buscador con 202+ fichas en móvil, si hay moderación para reseñas nuevas (para evitar
-          abuso), y si falta un formulario de "sugerir profesor o corrección".
+          Lo más importante no es rendimiento, es moderación: con reseñas negativas específicas y nombres reales
+          ya publicados, vale la pena confirmar si existe algún filtro o proceso de moderación antes de que una
+          reseña se publique, y qué pasa si un profesor pide corregir o eliminar una. Además: rendimiento del
+          buscador con 202+ fichas en móvil, y si falta un formulario de "sugerir profesor o corrección".
         </dd></div>
-        <div class="kv-row"><dt>Necesito de ti</dt><dd>Qué es específicamente lo que sientes incompleto o roto hoy — desde el Inicio se ve terminada, así que dime qué viste tú al usarla.</dd></div>
+        <div class="kv-row"><dt>Necesito de ti</dt><dd>Si ya existe algún proceso de moderación hoy (aunque sea manual), y qué es específicamente lo que sientes incompleto — desde afuera se ve terminada y con harto contenido real.</dd></div>
       </dl>
       <div class="tasks">
-        <div class="task"><input type="checkbox" data-task="wp-1" id="wp-1"><label for="wp-1">Decirme qué falla o falta hoy en WikiProfes</label></div>
-        <div class="task"><input type="checkbox" data-task="wp-2" id="wp-2"><label for="wp-2">Revisar moderación de reseñas</label></div>
+        <div class="task"><input type="checkbox" data-task="wp-1" id="wp-1"><label for="wp-1">Confirmar si existe moderación de reseñas hoy</label></div>
+        <div class="task"><input type="checkbox" data-task="wp-2" id="wp-2"><label for="wp-2">Decidir proceso para que un profesor pida corregir/eliminar una reseña</label></div>
+        <div class="task"><input type="checkbox" data-task="wp-3" id="wp-3"><label for="wp-3">Decirme qué más falla o falta hoy en WikiProfes</label></div>
       </div>
     </div>
   </section>
 
   <section id="inventario">
     <div class="section-head">
-      <span class="section-kicker">Lo que no alcancé a verificar</span>
-      <h2 class="section-title">Inventario abierto</h2>
-      <p class="section-dek">El bug de ruteo (ver arriba) me impidió cargar el contenido real de varias rutas, y no pude abrir los desplegables del menú. Francisco confirmó "Nosotros" pasándome el HTML real de la página — mismo truco sirve para el resto: clic en la sección desde el sitio, clic derecho → "Ver código fuente de la página" (o inspeccionar → copiar el HTML del `&lt;main&gt;`), y lo pego aquí.</p>
+      <span class="section-kicker">Lo que ya sabemos vs. lo que falta</span>
+      <h2 class="section-title">Inventario</h2>
+      <p class="section-dek">Con las 12 páginas guardadas ya tengo el HTML real de casi todo el sitio. Queda muy poco sin verificar.</p>
     </div>
+
+    <div class="eli5">
+      <span class="eli5-tag">ELI5</span>
+      <p>De todo el sitio, ya sabemos con certeza qué hay en cada página. Lo único que sigue sin verificar es qué hay adentro de dos menús desplegables del sitio ("Comunidad" y "El CEIC") — nunca los pude abrir.</p>
+    </div>
+
     <div class="card scrollx">
       <table class="inventory">
-        <thead><tr><th>Ítem del menú</th><th>Dónde aparece</th><th>Estado</th></tr></thead>
+        <thead><tr><th>Sección</th><th>Estado real (HTML guardado)</th></tr></thead>
         <tbody>
-          <tr><td>Inicio</td><td>Nav principal</td><td><span class="pill built">Construido</span></td></tr>
-          <tr><td>WikiProfes</td><td>Nav principal + tile Inicio</td><td><span class="pill built">Construido</span></td></tr>
-          <tr><td>Nosotros</td><td>El CEIC ▾ + tile Inicio + footer</td><td><span class="pill built">Construido — confirmado</span></td></tr>
-          <tr><td>Apuntes</td><td>Nav principal</td><td><span class="pill unknown">Sin verificar</span></td></tr>
-          <tr><td>Comunidad ▾</td><td>Nav principal (desplegable)</td><td><span class="pill unknown">Contenido sin abrir</span></td></tr>
-          <tr><td>El CEIC ▾</td><td>Nav principal (desplegable)</td><td><span class="pill partial">Contiene "Nosotros" (confirmado) — el resto del menú, sin verificar</span></td></tr>
-          <tr><td>Programa</td><td>Tile Inicio + footer <span class="fine">(no está en Comunidad▾ ni El CEIC▾)</span></td><td><span class="pill built">Construido — confirmado</span></td></tr>
-          <tr><td>Calendario</td><td>Solo footer</td><td><span class="pill built">Construido — confirmado</span></td></tr>
-          <tr><td>WikiEmpresas, Malla, Noticias, Convenios, FAQ, Actas, Transparencia, Documentación</td><td>Solo footer</td><td><span class="pill partial">Ruta ya existe en el bundle — contenido real sin confirmar</span></td></tr>
+          <tr><td>Inicio</td><td><span class="pill built">Construido</span></td></tr>
+          <tr><td>WikiProfes</td><td><span class="pill built">Construido — 202 fichas</span></td></tr>
+          <tr><td>Apuntes</td><td><span class="pill built">Construido — enlaza a carpeta de Drive</span></td></tr>
+          <tr><td>Nosotros</td><td><span class="pill built">Construido — mesa directiva completa</span></td></tr>
+          <tr><td>Programa</td><td><span class="pill built">Construido — 72 compromisos con seguimiento</span></td></tr>
+          <tr><td>Calendario</td><td><span class="pill built">Construido — 7 bloques de fechas reales</span></td></tr>
+          <tr><td>Actas</td><td><span class="pill built">Construido — enlaza a carpeta de Drive</span></td></tr>
+          <tr><td>Transparencia</td><td><span class="pill partial">A medias — rendiciones sí, foro de preguntas no</span></td></tr>
+          <tr><td>Documentación</td><td><span class="pill partial">A medias — estatuto sí, instructivo "próximamente"</span></td></tr>
+          <tr><td>Convenios</td><td><span class="pill partial">Página lista, sin datos cargados</span></td></tr>
+          <tr><td>WikiEmpresas</td><td><span class="pill todo">En construcción — placeholder confirmado</span></td></tr>
+          <tr><td>Malla Interactiva</td><td><span class="pill todo">En construcción — placeholder confirmado</span></td></tr>
+          <tr><td>Noticias</td><td><span class="pill todo">En construcción — placeholder confirmado</span></td></tr>
+          <tr><td>Preguntas frecuentes</td><td><span class="pill todo">En construcción — placeholder confirmado</span></td></tr>
+          <tr><td>Comunidad ▾ (menú)</td><td><span class="pill unknown">Sin verificar — nunca lo pude abrir</span></td></tr>
+          <tr><td>El CEIC ▾ (menú)</td><td><span class="pill unknown">Contiene Nosotros y Programa; el resto sin verificar</span></td></tr>
         </tbody>
       </table>
-      <div class="flag" style="margin-top:18px;">
-        <span class="flag-icon">◆</span>
-        <div class="flag-body">
-          <span class="flag-label">Hallazgo del HTML de Nosotros</span>
-          El <code class="inline">&lt;head&gt;</code> que pegaste trae <code class="inline">modulepreload</code> para
-          <strong>todas</strong> las secciones del footer: <code class="inline">wikiempresas-*.js</code>,
-          <code class="inline">malla-*.js</code>, <code class="inline">noticias-*.js</code>,
-          <code class="inline">calendario-*.js</code>, <code class="inline">actas-*.js</code>,
-          <code class="inline">transparencia-*.js</code>, <code class="inline">convenios-*.js</code>, y —
-          confirmado con el head de WikiProfes — <code class="inline">documentacion-*.js</code> también. Con esto
-          ya están las 8: cada sección del footer tiene su propio componente de ruta en el código — probablemente
-          el placeholder "en construcción" que mencionaste al principio, no una ruta faltante. Cambia un poco el
-          trabajo: es más "reemplazar el contenido de un componente que ya existe" que "crear la ruta desde cero".
-          Vale la pena confirmar el contenido real de 1–2 con el mismo truco del código fuente (Malla y
-          WikiEmpresas son las más útiles de chequear primero).
-        </div>
-      </div>
-      <div class="flag" style="margin-top:14px;">
-        <span class="flag-icon">◆</span>
-        <div class="flag-body">
-          <span class="flag-label">Calendario — confirmado construido</span>
-          El cuerpo real lo confirma: 7 bloques temáticos (matrícula y toma de ramos, período académico,
-          evaluaciones PEP1/PEP2, trámites académicos, feriados y recesos, examen de grado y tesis), con fechas
-          exactas del segundo semestre 2026 curadas a mano — no un embed de Google Calendar, una lista propia bien
-          armada. La sospecha por su meta descripción específica era correcta. También se confirman dos rutas
-          nuevas en el bundle: <code class="inline">wikiprofes._slug-*.js</code> (ficha individual de un profesor,
-          o sea WikiProfes tiene página de detalle por profesor, no solo un listado) y
-          <code class="inline">preguntas-frecuentes-*.js</code>.
-        </div>
-      </div>
-      <div class="flag" style="margin-top:14px;">
-        <span class="flag-icon">◆</span>
-        <div class="flag-body">
-          <span class="flag-label">Hallazgo del HTML de Programa</span>
-          También está terminado, y con harto más profundidad de lo que suponía: rastrea <strong>72 compromisos</strong>
-          agrupados en 8 comisiones (Mesa Central, Apoyo Estudiantil, Finanzas y Bienestar, Cultura, Emprendimiento y
-          Sostenibilidad, Comunicaciones, Bienestar Integral, Deportes), con barra de avance general
-          (7/72 — 10%) y estado individual por compromiso (completo / en progreso / no realizado). Es, en los hechos,
-          la página de transparencia de gestión más completa del sitio. Un detalle menor: ni "Comunidad" ni
-          "El CEIC" se resaltan como activos al entrar aquí — Programa no vive dentro de ningún desplegable del nav
-          principal, solo se llega por el tile del Inicio o el footer. No es urgente, pero es un ajuste barato de
-          navegación para cuando se toque el header.
-        </div>
-      </div>
     </div>
   </section>
 
@@ -677,20 +791,26 @@
       <span class="section-kicker">Para arrancar de verdad</span>
       <h2 class="section-title">Cómo seguimos</h2>
     </div>
+
+    <div class="eli5">
+      <span class="eli5-tag">ELI5</span>
+      <p>Con todo lo que ya sabemos, lo único que falta para pasar de "planificar" a "programar de verdad" es que me des acceso al código real del sitio. Todo lo demás — el orden, las prioridades, qué falta pedirle a la mesa — ya está resuelto.</p>
+    </div>
+
     <div class="card">
       <div class="kv">
-        <div class="kv-row"><dt>1. Dame acceso</dt><dd>Pásame el repo (GitHub/GitLab) o conecta la carpeta real del proyecto — lo que tengo ahora es solo el HTML guardado del Inicio, no el código fuente. Sin esto puedo seguir planificando, pero no puedo escribir ni un commit.</dd></div>
-        <div class="kv-row"><dt>2. Arregla el 404 primero</dt><dd>Es 15 minutos de trabajo y desbloquea que cualquier otra sección sea usable en cuanto exista.</dd></div>
-        <div class="kv-row"><dt>3. Construye el componente compartido</dt><dd>La lista de documentos (sección 02) rinde 4 páginas por el precio de una.</dd></div>
-        <div class="kv-row"><dt>4. Sigue el orden de prioridad de arriba</dt><dd>Malla → contenidos institucionales → WikiEmpresas → Calendario/FAQ → pulido de WikiProfes.</dd></div>
-        <div class="kv-row"><dt>En paralelo</dt><dd>Cada tarjeta tiene un "Necesito de ti" — son las piezas que solo la mesa CEIC tiene (actas, cifras, convenios, malla oficial). Vale la pena ir juntándolas mientras se programa, para no frenar en el último tramo.</dd></div>
+        <div class="kv-row"><dt>1. Dame acceso</dt><dd>Pásame el repo (GitHub/GitLab) o conecta la carpeta real del proyecto — lo que tengo ahora son páginas guardadas del navegador, no el código fuente. Sin esto puedo seguir planificando, pero no puedo escribir ni un commit.</dd></div>
+        <div class="kv-row"><dt>2. Arregla el 404 primero</dt><dd>Es minutos de trabajo y desbloquea que cualquier sección que ya funciona sea usable por link directo.</dd></div>
+        <div class="kv-row"><dt>3. El foro de Transparencia y Noticias</dt><dd>Son los dos únicos pendientes de la tarjeta 2 que necesitan código nuevo de verdad — el resto de esa tarjeta ya funciona o solo necesita contenido.</dd></div>
+        <div class="kv-row"><dt>4. Sigue el orden de arriba</dt><dd>Malla → foro de Transparencia + Noticias → cargar datos de Convenios + construir WikiEmpresas → FAQ → pulido de WikiProfes.</dd></div>
+        <div class="kv-row"><dt>En paralelo</dt><dd>Cada tarjeta tiene un "Necesito de ti" — piezas que solo la mesa CEIC tiene (malla oficial, preguntas frecuentes reales, listado de convenios, moderación de WikiProfes). Vale la pena ir juntándolas mientras se programa.</dd></div>
       </div>
     </div>
   </section>
 
   <footer class="end">
-    Bitácora generada el 31 de agosto de 2026 a partir de una revisión en vivo de ceicusach.cl.
-    Las casillas se guardan en este navegador — vuelve cuando quieras, van a seguir marcadas.
+    Bitácora actualizada el 1 de septiembre de 2026, a partir de las 12 páginas del sitio que guardaste y del
+    código de BuscaCursos. Las casillas se guardan en este navegador — vuelve cuando quieras, van a seguir marcadas.
   </footer>
 
 </div>
