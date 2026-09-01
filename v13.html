@@ -18,8 +18,8 @@
     --todo-soft:#e7e6df;
     --unknown:#5b6b7a;
     --unknown-soft:#e2e8ec;
-    --eli5:#2d6e68;
-    --eli5-soft:#e2f0ee;
+    --eli5:#2a5ca8;
+    --eli5-soft:#e3ebf8;
     --critical:#a3372f;
     --critical-soft:#f3e0dd;
     --code-bg:#1b1e27;
@@ -45,8 +45,8 @@
       --todo-soft:#20232b;
       --unknown:#8fa9bf;
       --unknown-soft:#1c2731;
-      --eli5:#7fc9c0;
-      --eli5-soft:#122523;
+      --eli5:#8ab4f0;
+      --eli5-soft:#182740;
       --critical:#e2938c;
       --critical-soft:#33211f;
       --code-bg:#0e0f13;
@@ -70,8 +70,8 @@
     --todo-soft:#20232b;
     --unknown:#8fa9bf;
     --unknown-soft:#1c2731;
-    --eli5:#7fc9c0;
-    --eli5-soft:#122523;
+    --eli5:#8ab4f0;
+    --eli5-soft:#182740;
     --critical:#e2938c;
     --critical-soft:#33211f;
     --code-bg:#0e0f13;
@@ -336,16 +336,28 @@
   }
   .mode-btn[aria-pressed="true"]{ opacity:1; background:rgba(255,255,255,.14); border-color:rgba(255,255,255,.2); }
   .mode-btn:hover{ opacity:1; }
+  .mode-switch-link{
+    margin-left:auto; align-self:center;
+    font-family:'IBM Plex Mono', monospace; font-size:.72rem; letter-spacing:.04em;
+    text-transform:uppercase; padding:6px 13px; border-radius:99px; border:1px solid rgba(255,255,255,.2);
+    background:transparent; color:var(--code-accent); text-decoration:none; opacity:.85;
+    display:inline-flex; align-items:center; gap:5px; white-space:nowrap;
+  }
+  .mode-switch-link:hover{ opacity:1; background:rgba(255,255,255,.1); }
 
   /* ================================================================
      BITÁCORA (línea de tiempo) — namespaced with "bm-" to avoid any
      collision with the .card/.stat/.kv/etc. classes used in the Plan view
      ================================================================ */
-  .bm-shell{ display:grid; grid-template-columns:230px 1fr; min-height:100vh; background:var(--paper); }
+  .bm-shell{
+    display:grid; grid-template-columns:230px 1fr; background:var(--paper);
+    min-height:100vh; min-height:100dvh; /* dvh: avoids mobile browsers' address-bar causing "stuck" jumps */
+  }
   .bm-sidebar{
     background:var(--code-bg); color:var(--code-fg);
     padding:22px 16px; display:flex; flex-direction:column; gap:22px;
-    position:sticky; top:44px; height:calc(100vh - 44px);
+    position:sticky; top:44px;
+    height:calc(100vh - 44px); height:calc(100dvh - 44px);
   }
   .bm-brand{ display:flex; flex-direction:column; gap:2px; }
   .bm-brand-mark{ font-family:'Fraunces', serif; font-size:1.25rem; font-weight:600; color:var(--code-fg); }
@@ -445,7 +457,8 @@
   .bm-scrim{ position:fixed; inset:0; background:rgba(20,22,28,.4); opacity:0; pointer-events:none; transition:opacity .18s ease; z-index:40; }
   .bm-scrim.open{ opacity:1; pointer-events:auto; }
   .bm-drawer{
-    position:fixed; top:0; right:0; height:100vh; width:min(420px, 92vw);
+    position:fixed; top:0; right:0; width:min(420px, 92vw);
+    height:100vh; height:100dvh;
     background:var(--paper-raised); border-left:1px solid var(--line); box-shadow:var(--shadow);
     transform:translateX(100%); transition:transform .2s ease; z-index:41;
     display:flex; flex-direction:column;
@@ -493,6 +506,14 @@
 <div class="mode-switch" role="tablist" aria-label="Vista">
   <button class="mode-btn" data-mode="plan" role="tab" aria-pressed="true">Plan</button>
   <button class="mode-btn" data-mode="bitacora" role="tab" aria-pressed="false">Bitácora</button>
+  <a
+    class="mode-switch-link"
+    href="https://chelpa.github.io/vite-ceic-usach/"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    Ver el prototipo ↗
+  </a>
 </div>
 
 <div id="viewPlan">
@@ -694,12 +715,12 @@
           <h3>Malla Interactiva</h3>
           <div class="path">/malla</div>
         </div>
-        <span class="pill todo">En construcción — confirmado</span>
+        <span class="pill partial">Prototipo listo — semestres reales, faltan prerrequisitos</span>
       </div>
 
       <div class="eli5">
         <span class="eli5-tag">ELI5</span>
-        <p>Es un mapa de los ramos de la carrera: qué se toma en cada semestre y qué ramo hay que haber aprobado antes de otro. Hoy la página solo dice "en construcción". Los datos de los ramos ya existen en BuscaCursos — falta la parte de "qué ramo pide qué otro ramo" y armar la pantalla.</p>
+        <p>Es un mapa de los ramos de la carrera: qué se toma en cada semestre y qué ramo hay que haber aprobado antes de otro. En el sitio real la página todavía dice "en construcción". En el prototipo ya está armada con los ramos reales y un checklist de avance — lo único que falta es la parte de "qué ramo pide qué otro ramo".</p>
       </div>
 
       <p class="purpose">
@@ -709,11 +730,14 @@
       </p>
       <dl class="kv">
         <div class="kv-row"><dt>Qué existe hoy</dt><dd>
-          El HTML real de <code class="inline">/malla</code> dice, textual:
+          En el <strong>sitio real</strong>, el HTML de <code class="inline">/malla</code> todavía dice, textual:
           <span class="quote">"En construcción. Estamos construyendo la malla interactiva. Pronto vas a poder
           revisar los ramos de la carrera, sus prerrequisitos y marcar tu propio avance semestre a semestre."</span>
-          Es un placeholder honesto y bien escrito, no una ruta rota. Las dos fuentes oficiales de la malla siguen
-          siendo <a href="https://fae.usach.cl/cica/" target="_blank" rel="noopener noreferrer">fae.usach.cl/cica</a>
+          En el <strong>prototipo Vite</strong> esa ruta ya está construida: los 54 ramos de Administración
+          agrupados en sus 10 semestres reales, los 32 ramos propios de Economía, y un checklist de avance por
+          ramo que se guarda en el navegador (<code class="inline">localStorage</code>, sin cuenta ni servidor).
+          Las dos fuentes oficiales de la malla siguen siendo
+          <a href="https://fae.usach.cl/cica/" target="_blank" rel="noopener noreferrer">fae.usach.cl/cica</a>
           (Administración) y <a href="https://fae.usach.cl/cice/" target="_blank" rel="noopener noreferrer">fae.usach.cl/cice</a>
           (Economía) — cada una lista los ramos por semestre y enlaza al PDF de programa de cada uno, pero sin
           diagrama de prerrequisitos en ninguna.
@@ -723,35 +747,58 @@
       <div class="flag" style="background:var(--done-soft); border-color:var(--done);">
         <span class="flag-icon" style="color:var(--done);">◆</span>
         <div class="flag-body">
-          <span class="flag-label" style="color:var(--done);">Buena noticia: los datos de ramos ya existen</span>
+          <span class="flag-label" style="color:var(--done);">Catálogo completo, ya cargado</span>
           BuscaCursos separa el dato real en <code class="inline">PROGRAMS.ingeco</code> (Administración: 226
-          secciones → 54 ramos únicos, niveles 1–10 completos) y <code class="inline">PROGRAMS.economia</code>
-          (Economía: 67 secciones → 32 ramos únicos, pero <strong>solo nivel 3</strong> por ahora — los niveles 1–2
-          se comparten con Administración, y 4–10 probablemente faltan por cargar). Esto sale directo del dato de
-          la app, no de un resumen — es confiable para construir contra él. Ojo con los códigos: no es
-          "351 = Economía, 352 = Administración"; la mayoría de los ramos propios de Economía también usan el
-          rango 352xxx, y solo un grupo de ramos avanzados (Macroeconomía II, Econometría II, Práctica Profesional,
-          Trabajo de Titulación) usa 351xxx.
+          secciones → 54 ramos únicos, niveles 1–10 completos y confiables) y <code class="inline">PROGRAMS.economia</code>
+          (Economía: 67 secciones → 32 ramos únicos). Se revisó el campo <code class="inline">nivel</code> de
+          Economía con más detalle de lo pensado: <strong>no es que falten los niveles 4–10 por cargar — el campo
+          viene roto para toda la mención</strong>, las 67 secciones están tageadas <code class="inline">nivel: 3</code>
+          por igual, incluyendo ramos claramente avanzados como Macroeconomía II, Práctica Profesional o Trabajo de
+          Titulación. Ojo con los códigos: no es "351 = Economía, 352 = Administración"; la mayoría de los
+          ramos propios de Economía también usan el rango 352xxx, y solo un grupo de ramos avanzados (Macroeconomía
+          II, Econometría II, Práctica Profesional, Trabajo de Titulación) usa 351xxx.
+        </div>
+      </div>
+
+      <div class="flag" style="background:var(--done-soft); border-color:var(--done);">
+        <span class="flag-icon" style="color:var(--done);">◆</span>
+        <div class="flag-body">
+          <span class="flag-label" style="color:var(--done);">Resuelto: Economía también agrupada por semestre real</span>
+          Con el campo <code class="inline">nivel</code> de BuscaCursos roto, la primera versión agrupaba Economía
+          por <code class="inline">electividad</code> en vez de semestre. Francisco encontró la fuente que
+          faltaba: <a href="https://fae.usach.cl/cice/" target="_blank" rel="noopener noreferrer">fae.usach.cl/cice</a>,
+          la malla curricular oficial completa por semestre (más su versión anterior a 2023, para los ramos que
+          BuscaCursos todavía trae con código de la malla vieja). Se cruzaron los 32 ramos contra ambas mallas por
+          nombre (y por número de electivo cuando el nombre es genérico), usando el prefijo del código para elegir
+          cuál malla manda cuando un ramo aparece en las dos. Los 32 quedaron mapeados sin ambigüedad, semestres 4
+          a 10 — el semestre 3 no trajo ramos propios de Economía en este corte de BuscaCursos. Economía ya se ve
+          igual que Administración: agrupada por semestre real, no por tipo.
         </div>
       </div>
 
       <div class="kv" style="margin-top:14px;">
         <div class="kv-row"><dt>Enfoque técnico</dt><dd class="tech">
           1) Deduplicar <code class="inline">PROGRAMS.ingeco.sections</code> y
-          <code class="inline">PROGRAMS.economia.sections</code> por código → catálogo base de ambas menciones.
-          2) Completar los niveles que faltan de Economía. 3) Los prerrequisitos no están en ninguna fuente
-          consolidada — solo salen de cada PDF de programa de asignatura individual (campo "requisitos"). Es
-          scripteable, no manual, pero es trabajo real a presupuestar. 4) Grilla por semestre y mención, resalta
-          prerrequisitos al hacer clic — sin librería de grafos para la v1.
+          <code class="inline">PROGRAMS.economia.sections</code> por código → catálogo base de ambas menciones (hecho).
+          2) Agrupar Administración por <code class="inline">nivel</code> (confiable) y Economía por
+          <code class="inline">electividad</code> (el <code class="inline">nivel</code> no sirve) → grilla navegable
+          con checklist de avance en <code class="inline">localStorage</code> (hecho, ruta <code class="inline">/malla</code>
+          del prototipo). 3) Los prerrequisitos no están en ninguna fuente consolidada — solo salen de cada PDF de
+          programa de asignatura individual (campo "requisitos"). Es scripteable, no manual, pero es trabajo real a
+          presupuestar (pendiente). 4) Una vez estén los prerrequisitos, resaltarlos al hacer clic en un ramo — sin
+          librería de grafos para la v1 (pendiente).
         </dd></div>
       </div>
       <div class="tasks">
-        <div class="task"><input type="checkbox" data-task="malla-1" id="malla-1" checked disabled><label for="malla-1" class="done-text">Catálogo base mención Administración — ya está en BuscaCursos (54 ramos)</label></div>
-        <div class="task"><input type="checkbox" data-task="malla-2" id="malla-2" checked disabled><label for="malla-2" class="done-text">Catálogo base mención Economía — arrancado en BuscaCursos (32 ramos, nivel 3)</label></div>
-        <div class="task"><input type="checkbox" data-task="malla-2b" id="malla-2b"><label for="malla-2b">Completar niveles 4–10 de Economía en el dataset</label></div>
+        <div class="task"><input type="checkbox" data-task="malla-1" id="malla-1" checked disabled><label for="malla-1" class="done-text">Catálogo base mención Administración — 54 ramos, niveles 1–10</label></div>
+        <div class="task"><input type="checkbox" data-task="malla-2" id="malla-2" checked disabled><label for="malla-2" class="done-text">Catálogo base mención Economía — 32 ramos</label></div>
+        <div class="task"><input type="checkbox" data-task="malla-2b" id="malla-2b" checked disabled><label for="malla-2b" class="done-text">Agrupar Economía sin inventar semestre — primero por electividad (mientras no había fuente confiable), luego reemplazado por el semestre real cruzado contra fae.usach.cl/cice</label></div>
+        <div class="task"><input type="checkbox" data-task="malla-6" id="malla-6" checked disabled><label for="malla-6" class="done-text">Botón para achicar las tarjetas de la malla ("Grande/Chica"), guardado en localStorage</label></div>
+        <div class="task"><input type="checkbox" data-task="malla-3" id="malla-3" checked disabled><label for="malla-3" class="done-text">Grilla navegable en el prototipo Vite (<code class="inline">/malla</code>) + checklist de avance en localStorage</label></div>
         <div class="task"><input type="checkbox" data-task="malla-4" id="malla-4"><label for="malla-4">Script para extraer "requisitos" de los PDF de programa (ambas menciones)</label></div>
-        <div class="task"><input type="checkbox" data-task="malla-5" id="malla-5"><label for="malla-5">Grilla por semestre y mención + resaltado de prerrequisitos</label></div>
+        <div class="task"><input type="checkbox" data-task="malla-5" id="malla-5"><label for="malla-5">Resaltado de prerrequisitos al hacer clic en un ramo</label></div>
       </div>
+    </div>
     </div>
 
     <!-- 2 Noticias / Actas / Transparencia / Documentación -->
@@ -828,40 +875,39 @@
           <h3>WikiEmpresas · Convenios</h3>
           <div class="path">/wikiempresas · /convenios</div>
         </div>
-        <span class="pill partial">Convenios solo necesita datos</span>
+        <span class="pill partial">Estructura lista — falta contenido real</span>
       </div>
 
       <div class="eli5">
         <span class="eli5-tag">ELI5</span>
-        <p>WikiEmpresas es la versión de WikiProfes pero para empresas donde la gente hace práctica — hay que construirla entera. Convenios es distinto: la página ya está lista y bien hecha, con un mensaje claro de "todavía no hay convenios" — solo falta cargarle datos reales.</p>
+        <p>Las dos páginas ya funcionan de verdad en el prototipo — buscador, tarjetas, ficha con reseñas para WikiEmpresas; grilla de convenios para Convenios — pero están vacías a propósito, porque no tenemos ni una empresa ni un convenio real que cargarles. En cuanto la mesa tenga esa data, se agrega a un archivo y aparece sola, sin tocar el código de la página.</p>
       </div>
 
       <p class="purpose">El mismo patrón de WikiProfes (ficha + buscador), aplicado a empresas: convenios de práctica, descuentos y beneficios para estudiantes.</p>
       <dl class="kv">
-        <div class="kv-row"><dt>WikiEmpresas — sin construir</dt><dd>
-          Texto real: <span class="quote">"En construcción. Estamos preparando WikiEmpresas. Pronto subiremos el
-          listado de empresas y las reseñas de estudiantes."</span> Página real la que hay, contenido no.
+        <div class="kv-row"><dt>WikiEmpresas — construido, sin datos</dt><dd>
+          Se adaptó el mismo patrón de WikiProfes (buscador + tarjeta + ficha con reseñas, mismo modelo de datos:
+          nombre, rubro, calificación, reseñas) sobre un dataset vacío
+          (<code class="inline">src/data/wikiempresas.json</code>). Como no hay ni Canva ni BuscaCursos para
+          empresas, no se inventó ninguna — la pantalla hoy muestra un estado vacío honesto en vez de fichas
+          falsas.
         </dd></div>
-        <div class="kv-row"><dt>Convenios — página lista, sin datos</dt><dd>
-          Distinto: no dice "en construcción". Dice <span class="quote">"Aún no hay convenios publicados. Estamos
-          gestionando descuentos y alianzas para la comunidad estudiantil."</span> Es un estado vacío bien
-          redactado — probablemente el componente que muestra la lista ya está listo para recibir datos, solo
-          nunca se le cargó ninguno. Habría que confirmarlo mirando el código, pero por cómo está escrito el
-          mensaje no parece una ruta a medio programar.
+        <div class="kv-row"><dt>Convenios — construido, sin datos</dt><dd>
+          Se armó la grilla de tarjetas (nombre, categoría, descuento, vigencia, link) sobre
+          <code class="inline">src/data/convenios.json</code> vacío. Mientras esté vacío se sigue mostrando el
+          mismo texto real del sitio: <span class="quote">"Aún no hay convenios publicados. Estamos gestionando
+          descuentos y alianzas para la comunidad estudiantil."</span>
         </dd></div>
         <div class="kv-row"><dt>Enfoque técnico</dt><dd class="tech">
-          Dos patrones de tarjeta ya construidos para reusar en WikiEmpresas: WikiProfes resolvió ficha + buscador
-          + 202 registros para "una persona con datos"; la grilla de directiva en Nosotros (foto cuadrada, rol en
-          mayúsculas, nombre, lista de responsabilidades) calza casi literal con "una empresa con datos" si no
-          hace falta buscador. Cambia el modelo (empresa, rubro, tipo de convenio, beneficio, contacto) en vez de
-          reescribir la UI desde cero.
+          Los dos componentes están terminados y ya no necesitan cambios de código para recibir datos reales —
+          solo agregar entradas a los JSON con la forma que ya documenta LEEME.md.
         </dd></div>
-        <div class="kv-row"><dt>Necesito de ti</dt><dd>El listado de convenios/empresas que la mesa ya maneja (probablemente existe en una planilla interna) — esto por sí solo probablemente activa Convenios sin tocar código.</dd></div>
+        <div class="kv-row"><dt>Necesito de ti</dt><dd>El listado de convenios/empresas que la mesa ya maneja (probablemente existe en una planilla interna) — con eso solo, las dos páginas quedan con contenido real sin tocar código.</dd></div>
       </dl>
       <div class="tasks">
         <div class="task"><input type="checkbox" data-task="emp-0" id="emp-0" checked disabled><label for="emp-0" class="done-text">Confirmado: Convenios ya tiene página y estado vacío, solo falta contenido</label></div>
-        <div class="task"><input type="checkbox" data-task="emp-1" id="emp-1"><label for="emp-1">Levantar el listado actual de convenios/empresas</label></div>
-        <div class="task"><input type="checkbox" data-task="emp-2" id="emp-2"><label for="emp-2">Adaptar el componente de WikiProfes/Nosotros al modelo de empresas (WikiEmpresas)</label></div>
+        <div class="task"><input type="checkbox" data-task="emp-1" id="emp-1"><label for="emp-1">Levantar el listado real de convenios/empresas</label></div>
+        <div class="task"><input type="checkbox" data-task="emp-2" id="emp-2" checked disabled><label for="emp-2" class="done-text">Construir WikiEmpresas y Convenios (buscador + tarjetas + fichas) sobre datasets vacíos, listos para recibir datos reales</label></div>
       </div>
     </div>
 
@@ -928,19 +974,49 @@
         de estudiantes con fecha. El contenido de las reseñas es real y, en algunos casos, bastante directo — hay
         opiniones negativas específicas sobre profesores identificados por su nombre completo.
       </p>
-      <dl class="kv">
+
+      <div class="flag" style="background:var(--done-soft); border-color:var(--done);">
+        <span class="flag-icon" style="color:var(--done);">◆</span>
+        <div class="flag-body">
+          <span class="flag-label" style="color:var(--done);">Resuelto: faltaban 611 reseñas</span>
+          Francisco notó que el prototipo tenía menos info que el sitio real. Se confirmó por qué: la página de
+          listado de <code class="inline">/wikiprofes</code> (de donde salió el HTML guardado) solo muestra 1 reseña
+          de ejemplo por profesor aunque diga "N reseñas" — el resto vive en el bundle JS del sitio, no en el HTML
+          visible. Se navegó al sitio real (ceicusach.cl) con el navegador, se ubicó el array completo de datos
+          dentro de <code class="inline">assets/index-*.js</code> (todos los profesores con TODAS sus reseñas y,
+          cuando la reseña la trae, su propia calificación 1-5), y se cruzó con el archivo histórico de Canva:
+          613 reseñas oficiales del sitio + 243 del histórico de Canva que el sitio no tiene = <strong>856 reseñas
+          en total</strong>, contra las ~280 que había antes (básicamente 1 por profesor). También se corrigió que
+          algunos profesores dictan más de un ramo (antes solo se guardaba uno).
+        </div>
+      </div>
+
+      <div class="flag" style="background:var(--done-soft); border-color:var(--done);">
+        <span class="flag-icon" style="color:var(--done);">◆</span>
+        <div class="flag-body">
+          <span class="flag-label" style="color:var(--done);">Resuelto: puntaje estimado de vuelta, con etiqueta</span>
+          Francisco pidió volver a mostrar el puntaje estimado para profesores sin calificación oficial. Se
+          recalculó con una regla más estricta: solo se estima cuando hay al menos un comentario histórico de
+          Canva detrás — nunca sobre una reseña puramente oficial sin nota. 76 de las 280 fichas quedaron con
+          puntaje estimado, marcadas con la etiqueta <code class="inline">Estimado</code> y una nota explicando
+          que no es un promedio de votos oficiales; las otras 43 sin señal de tono clara siguen en blanco.
+        </div>
+      </div>
+
+      <dl class="kv" style="margin-top:14px;">
         <div class="kv-row"><dt>Qué revisar</dt><dd class="tech">
           Lo más importante no es rendimiento, es moderación: con reseñas negativas específicas y nombres reales
           ya publicados, vale la pena confirmar si existe algún filtro o proceso de moderación antes de que una
           reseña se publique, y qué pasa si un profesor pide corregir o eliminar una. Además: rendimiento del
-          buscador con 202+ fichas en móvil, y si falta un formulario de "sugerir profesor o corrección".
+          buscador con 280 fichas en móvil, y si falta un formulario de "sugerir profesor o corrección".
         </dd></div>
-        <div class="kv-row"><dt>Necesito de ti</dt><dd>Si ya existe algún proceso de moderación hoy (aunque sea manual), y qué es específicamente lo que sientes incompleto — desde afuera se ve terminada y con harto contenido real.</dd></div>
+        <div class="kv-row"><dt>Necesito de ti</dt><dd>Si ya existe algún proceso de moderación hoy (aunque sea manual).</dd></div>
       </dl>
       <div class="tasks">
         <div class="task"><input type="checkbox" data-task="wp-1" id="wp-1"><label for="wp-1">Confirmar si existe moderación de reseñas hoy</label></div>
         <div class="task"><input type="checkbox" data-task="wp-2" id="wp-2"><label for="wp-2">Decidir proceso para que un profesor pida corregir/eliminar una reseña</label></div>
-        <div class="task"><input type="checkbox" data-task="wp-3" id="wp-3"><label for="wp-3">Decirme qué más falla o falta hoy en WikiProfes</label></div>
+        <div class="task"><input type="checkbox" data-task="wp-3" id="wp-3" checked disabled><label for="wp-3" class="done-text">Completar las reseñas que faltaban — 613 oficiales + 243 históricas de Canva, 856 en total</label></div>
+        <div class="task"><input type="checkbox" data-task="wp-4" id="wp-4" checked disabled><label for="wp-4" class="done-text">Restaurar el puntaje estimado para profesores solo-Canva, con etiqueta y nota explicando que no es un promedio oficial</label></div>
       </div>
     </div>
   </section>
@@ -1054,6 +1130,11 @@
 
   <main class="bm-main">
     <p class="bm-fine" style="margin:0 0 4px;">Registro de lo que realmente va pasando, sección por sección — arquitectura, diseño, implementación, contenido, decisiones e incidencias. El plan de arriba (pestaña "Plan") dice qué falta; esto dice qué se hizo y cuándo.</p>
+
+    <div class="bm-filters" id="bmViewToggle" style="margin-top:12px;">
+      <button class="bm-chip" data-view="resumen" aria-pressed="true">Actividad reciente</button>
+      <button class="bm-chip" data-view="completa" aria-pressed="false">Línea de tiempo completa</button>
+    </div>
 
     <div class="bm-stat-row" id="bmStatRow"></div>
 
@@ -1202,10 +1283,6 @@
     btn.addEventListener('click', function(){ setMode(btn.getAttribute('data-mode')); });
   });
 
-  var savedMode = 'plan';
-  try { savedMode = localStorage.getItem(MODE_KEY) || 'plan'; } catch(e){}
-  setMode(savedMode);
-
   /* ---------- bitácora (línea de tiempo) ---------- */
   var BM_STORE_KEY = 'ceic-bitacora-modular-v1';
 
@@ -1243,7 +1320,21 @@
     {id:'c4', fecha:'2026-09-01', tipo:'decision', autor:'Claude', contenido:'Se reconstruyó el contenido de los menús "Comunidad" y "El CEIC" a partir de qué botón del nav queda activo en cada página guardada, en vez de esperar a poder abrirlos directamente.', extra:{alcance:'Estructura de navegación', alternativas:'Esperar acceso al repo para verlo en el código'}, confirmada:true},
     {id:'c5', fecha:'2026-09-01', tipo:'arquitectura', autor:'Claude', contenido:'El nombre del chunk wikiprofes._slug-*.js confirma que el sitio usa React Router en modo de rutas por archivo, sobre un build de Vite.', extra:{alcance:'Stack técnico', tipo:'Stack técnico'}, confirmada:true},
     {id:'c6', fecha:'2026-09-01', tipo:'implementacion', autor:'Claude', contenido:'Primera pieza del prototipo portátil: EntryList.jsx (lista de entradas fechadas) + DocumentLink, con ejemplos de uso para Noticias y Documentación.', extra:{modulo:'Componente compartido de contenido', estado:'Listo para integrar'}, confirmada:false},
-    {id:'c7', fecha:'2026-09-01', tipo:'diseno', autor:'Francisco', contenido:'Se adapta el diseño de "Bitácora Modular" (sidebar + línea de tiempo + formulario de nueva entrada) a la bitácora del CEIC, como una segunda vista dentro del mismo documento.', extra:{elemento:'Componente de UI', estado:'En revisión'}, confirmada:false}
+    {id:'c7', fecha:'2026-09-01', tipo:'diseno', autor:'Francisco', contenido:'Se adapta el diseño de "Bitácora Modular" (sidebar + línea de tiempo + formulario de nueva entrada) a la bitácora del CEIC, como una segunda vista dentro del mismo documento.', extra:{elemento:'Componente de UI', estado:'En revisión'}, confirmada:false},
+    {id:'c8', fecha:'2026-09-01', tipo:'contenido', autor:'Claude', contenido:'Se confirmó el origen de WikiProfes: un Canva de 184 diapositivas (una por profesor, orden alfabético), armado a mano con comentarios de estudiantes recopilados antes de que existiera la sección real del sitio. Se extrajo el contenido completo (179 de 184 profesores, con nombre y comentarios) a un JSON estructurado como base de datos para cuando se integre la sección real.', extra:{seccion:'WikiProfes', origen:'Canva original (link de Francisco)'}, confirmada:true},
+    {id:'c9', fecha:'2026-09-01', tipo:'prototipo', autor:'Claude', contenido:'Se armó un prototipo navegable de buscador de WikiProfes (estilo BuscaCursos: búsqueda + filtros + orden, sin recarga de página). Cruza las 202 fichas reales del sitio (calificación, ramos, cita, slug) con los 179 profes del Canva histórico por nombre: 101 profes quedaron con ambas fuentes, 101 solo con ficha oficial y 78 solo con comentarios históricos (sin ficha aún). El diseño reutiliza el lenguaje visual real del sitio (tarjetas, avatares, estrellas) y respeta lo genérico de la norma gráfica USACH (escudo/nombre arriba, footer con contacto), sin copiar buscacursos.uc.cl porque no es de la USACH — el buscacursos.cl que mandó Francisco es una herramienta no oficial hecha por otro alumno, se usó solo como referencia de densidad/UX de filtros.', extra:{seccion:'WikiProfes', entregable:'Artifact interactivo', enlace:'https://claude.ai/code/artifact/47f9d494-1f7e-46d0-804c-d60cd99ac187'}, confirmada:true},
+    {id:'c10', fecha:'2026-09-01', tipo:'prototipo', autor:'Claude', contenido:'Se convirtió el prototipo portátil en un proyecto Vite navegable de punta a punta (React + React Router + Tailwind v4, el mismo stack confirmado del sitio real): 16 rutas — las 14 páginas reales, WikiProfes y la Bitácora. Calendario, Programa y Nosotros llevan su contenido real extraído del HTML guardado (fechas, 72 compromisos con su estado, la mesa directiva completa), no relleno. Las 5 secciones que el sitio real tiene "en construcción" quedaron igual de vacías, sin inventar contenido. Fotos del carrusel de Inicio y de la mesa directiva quedaron como placeholder porque el HTML guardado no trajo la carpeta de imágenes; los colores del tema son una aproximación razonada porque tampoco trajo el CSS compilado (sí se pudieron confirmar los nombres exactos de cada variable, vía las clases del markup).', extra:{seccion:'Todo el sitio', entregable:'Proyecto Vite (npm install && npm run dev)'}, confirmada:true},
+    {id:'c11', fecha:'2026-09-01', tipo:'prototipo', autor:'Claude', contenido:'Se construyó la Malla interactiva en el prototipo Vite (/malla), que hasta ahora era un stub igual que el sitio real. Los datos salen del PROGRAMS embebido en el HTML guardado de BuscaCursos: 226 secciones de Administración deduplicadas en 54 ramos únicos repartidos en sus 10 semestres reales, y 67 secciones de Economía deduplicadas en 32 ramos únicos. Al revisar el campo \'nivel\' de Economía para completarlo (la tarea pendiente que decía la bitácora) se encontró que viene roto para toda la mención, no solo incompleto: las 67 secciones están tageadas nivel 3 por igual, incluyendo ramos avanzados como Macroeconomía II o Trabajo de Titulación. En vez de fabricar una ubicación semestral con un dato que no es confiable, se agrupó Economía por electividad (23 obligatorios, 8 electivos de especialidad, 1 electivo de ciencias sociales) y se dejó explícito en la página que semestres 1-2 son el tronco común con Administración. La malla tiene un toggle de mención, tarjetas de ramo con área (color por hash) y créditos SCT, y un checklist de avance que se guarda en localStorage del navegador. Los prerrequisitos entre ramos quedan marcados como pendientes en la página misma y en la bitácora — no están en ninguna fuente consolidada, solo en el PDF de programa de cada asignatura por separado.', extra:{seccion:'Malla interactiva', entregable:'Ruta /malla del proyecto Vite'}, confirmada:true},
+    {id:'c12', fecha:'2026-09-01', tipo:'contenido', autor:'Claude', contenido:'Francisco revisó el wikiprofes.html standalone que se le había entregado y notó que le faltaba info respecto al WikiProfes del sitio real. Se investigó y se confirmó la causa: la página de listado de /wikiprofes en ceicusach.cl solo muestra 1 reseña de ejemplo por profesor (aunque el contador diga \'N reseñas\') - el HTML guardado de esa página, que era la fuente de datos original, nunca tuvo las demás. El resto de las reseñas vive embebido en el bundle JS que carga el sitio, no en el HTML visible. Se navegó a ceicusach.cl con el navegador, se ubicó el arreglo de datos completo (con todas las reseñas de los 202 profesores, cada una con su propia calificación cuando la trae, y los ramos como lista para los profesores que dictan más de uno) dentro de assets/index-*.js, y se extrajo completo. Se volvió a cruzar con el archivo histórico de Canva: de las 613 reseñas oficiales encontradas, unas 279 ya estaban representadas en el cruce anterior via Canva, pero 243 reseñas de Canva no tienen equivalente en el sitio oficial (profesores o comentarios que no están en la ficha actual) y se agregaron igual, marcadas con su fuente. Total: 856 reseñas en las 280 fichas (antes había esencialmente 1 por profesor). Se actualizó el dataset y el componente tanto en el proyecto Vite (/wikiprofes) como en el wikiprofes.html standalone: cada ficha ahora muestra su lista completa de reseñas, cada una etiquetada como \'WikiProfes (sitio oficial)\' o \'Archivo histórico (Canva)\'. De paso se sacó la calificación \'estimada\' que se le había inventado a los profesores solo-Canva en una versión anterior del standalone - no correspondía, ya que era un valor calculado del tono de los comentarios y no un dato real; ahora esos profesores simplemente muestran \'Sin calificación oficial\' con sus comentarios históricos, igual que ya hacía la versión del proyecto Vite.', extra:{seccion:'WikiProfes', entregable:'/wikiprofes del proyecto Vite + wikiprofes.html standalone'}, confirmada:true},
+    {id:'c13', fecha:'2026-09-01', tipo:'prototipo', autor:'Claude', contenido:'Francisco publicó el proyecto Vite en GitHub (chelpa/vite-ceic-usach) y GitHub Pages lo mostraba en blanco. Causa: GitHub Pages sirve el repo bajo /vite-ceic-usach/ (no en la raíz del dominio), y Vite por defecto pide sus archivos (JS, CSS, favicon) desde /, que en GitHub Pages es la raíz de chelpa.github.io, no este repo - los assets salían 404 y la app nunca arrancaba. Se agregó base: \'/vite-ceic-usach/\' en vite.config.js y basename={import.meta.env.BASE_URL} al BrowserRouter en App.jsx, para que tanto los assets como las rutas internas (/wikiprofes, /malla, etc.) respeten ese prefijo. De paso se resolvió el problema gemelo que toda SPA tiene en GitHub Pages: entrar directo a una ruta interna o refrescar en ella también da un 404 real, porque GitHub Pages no sabe que esas rutas existen del lado del cliente (de hecho el sitio REAL ceicusach.cl tiene este mismo problema - se confirmó al navegarlo directo para la investigación de WikiProfes de la entrada c12: /wikiprofes en blanco si se entra directo, funciona si se navega desde el home). Se aplicó la técnica de rafgraph/spa-github-pages: public/404.html redirige codificando la ruta pedida en el query string, y un script chico al inicio de index.html la decodifica antes de que React Router monte. Se agregó también public/.nojekyll y un GitHub Action (.github/workflows/deploy.yml) que hace el build y publica dist/ automáticamente en cada push a main. Se verificó todo con un servidor local que simula el comportamiento real de GitHub Pages (sirviendo bajo el prefijo /vite-ceic-usach/ y devolviendo 404.html con status 404 para rutas no reconocidas): carga directa, entrada directa a una ruta interna, y refresco en una ruta interna funcionan los tres.', extra:{seccion:'Despliegue', entregable:'vite.config.js, App.jsx, public/404.html, index.html, public/.nojekyll, .github/workflows/deploy.yml'}, confirmada:true},
+    {id:'c14', fecha:'2026-09-01', tipo:'prototipo', autor:'Claude', contenido:'Se construyó la estructura de WikiEmpresas y Convenios en el prototipo Vite. A diferencia de WikiProfes, acá no hay ninguna fuente de datos reales (ni Canva histórico ni BuscaCursos) - así que no se inventó ninguna empresa ni convenio. Se armó el mismo patrón de WikiProfes para WikiEmpresas (buscador, tarjeta con logo-inicial, ficha con reseñas, mismo modelo de datos) sobre un dataset vacío (src/data/wikiempresas.json = []), con un estado vacío honesto en vez de fichas falsas. Para Convenios se armó una grilla de tarjetas (nombre, categoría, descuento, vigencia, link) sobre src/data/convenios.json = [], que mientras esté vacío sigue mostrando el mismo texto real del sitio (\'Aún no hay convenios publicados...\'). Los dos componentes quedan terminados: cargar contenido real de ahora en adelante es agregar entradas al JSON correspondiente, no tocar código - la forma exacta de cada entrada quedó documentada en LEEME.md. Se verificaron las 16 rutas del proyecto con Playwright después de todos los cambios de esta sesión (Malla, WikiProfes, fix de GitHub Pages, WikiEmpresas y Convenios): las 16 cargan sin errores de consola.', extra:{seccion:'WikiEmpresas / Convenios', entregable:'/wikiempresas y /convenios del proyecto Vite'}, confirmada:true},
+    {id:'c15', fecha:'2026-09-01', tipo:'contenido', autor:'Claude', contenido:'Francisco preguntó qué pasó con los puntajes estimados que se habían calculado antes para WikiProfes, y pidió volver a mostrarlos. Se recalculó desde cero, con una regla más estricta que la primera vez (entrada anterior a c12): el puntaje estimado (heurística de tono positivo/negativo sobre palabras clave en español, escala 1-5) solo se aplica cuando el profesor tiene al menos un comentario histórico de Canva detrás — nunca sobre una reseña puramente oficial que simplemente no trae nota, porque ahí no corresponde adivinar algo que el sitio real tampoco calculó. Con esa regla: 76 de los 280 profesores quedaron con calificación estimada (69 solo-Canva + 7 con ambas fuentes), marcados con la etiqueta "Estimado" en la tarjeta y en la ficha, con una nota explicando que no es un promedio de votos oficiales. Los otros 43 profesores sin calificación oficial y sin señal de tono clara en sus comentarios se dejaron honestamente en blanco ("Sin calificación"). Se aplicó tanto en el proyecto Vite (/wikiprofes) como en el wikiprofes.html standalone, y se verificó con Playwright que la etiqueta aparece correctamente y no hay errores de consola.', extra:{seccion:'WikiProfes', entregable:'/wikiprofes del proyecto Vite + wikiprofes.html standalone'}, confirmada:true},
+    {id:'c16', fecha:'2026-09-01', tipo:'incidencia', autor:'Claude', contenido:'Francisco avisó que, después de subir los cambios a GitHub, la página seguía en blanco en https://chelpa.github.io/vite-ceic-usach/. Se investigó entrando directo al sitio publicado y al repo con el navegador (no adivinando): vite.config.js y public/404.html sí estaban subidos correctamente con el arreglo. El problema real es otro archivo: .github/workflows/deploy.yml no estaba en el repo (404 al pedirlo directo). Sin ese archivo, GitHub Pages no compila el proyecto Vite antes de publicarlo - sirve el código fuente tal cual, por eso el navegador pedía chelpa.github.io/src/main.jsx directo (confirmado viendo los 404 en la pestaña de red), que es JSX sin procesar y un navegador no puede ejecutar. Se le explicó a Francisco paso a paso, sin git ni terminal, cómo crear ese archivo desde la web de GitHub (Add file → Create new file) y cómo activar Settings → Pages → Source → "GitHub Actions" en vez de "Deploy from a branch", que es lo que hace que ese archivo realmente se use.', extra:{seccion:'Despliegue', entregable:'Guía paso a paso para Francisco (sin terminal)'}, confirmada:true},
+    {id:'c17', fecha:'2026-09-01', tipo:'decision', autor:'Claude', contenido:'Con GitHub Pages ya funcionando, Francisco notó que la Bitácora interna del proyecto Vite (/bitacora, la que vive detrás de la franja gris del prototipo) se había quedado atrás — solo tenía las primeras 9 entradas, no las 16 de este documento. Ambas bitácoras son cosas distintas a propósito: esta (el Artifact que Francisco abre desde el chat) es el documento de trabajo completo, con tarjetas por sección, ELI5 e inventario; la de /bitacora es una vista simplificada de solo la línea de tiempo, pensada para vivir dentro del prototipo mismo. Se sincronizó src/data/bitacora.json con las mismas 17 entradas de este documento (incluida esta), y se agregó navegación cruzada entre ambas: la franja gris del prototipo ahora linkea también a este documento completo (no solo a /bitacora), y este documento tiene un link fijo arriba ("Ver el prototipo") hacia https://chelpa.github.io/vite-ceic-usach/. Importante: /bitacora guarda su copia en localStorage del navegador de cada persona una vez que la visita — si alguien ya la abrió antes con las 9 entradas viejas, su navegador va a seguir mostrando esas 9 hasta que borre ese localStorage o se agregue un mecanismo de versión; para cualquiera que la abra por primera vez ya carga las 17 actualizadas.', extra:{alcance:'Bitácora interna + navegación cruzada', alternativas:'Fusionar ambas bitácoras en una sola — se descartó por ahora porque cumplen roles distintos (documento de trabajo vs. timeline liviano dentro del prototipo)'}, confirmada:true},
+    {id:'c18', fecha:'2026-09-01', tipo:'decision', autor:'Claude', contenido:'Francisco contó que tiene una repo propia (chelpa/ceic-usach, publicada en https://chelpa.github.io/ceic-usach/) donde ya venía guardando versiones anteriores de este documento (index.html, y un historial v1.html a v10.html de iteraciones previas). Se confirmó entrando ahí con el navegador que index.html ya tenía la versión más nueva de este documento (17 entradas, con el link "Ver el prototipo" incluido) — Francisco ya lo había subido por su cuenta con git, sin que hiciera falta mandarle el archivo de nuevo. Como esa URL es pública (a diferencia del link de claude.ai, que es privado a la cuenta de Francisco), se actualizó el link cruzado de la franja gris del prototipo Vite ("Bitácora completa") para que apunte ahí en vez de al Artifact — así los dos sitios publicados en GitHub Pages (vite-ceic-usach y ceic-usach) quedan linkeados entre sí de verdad, sin depender de una cuenta de claude.ai. De ahora en adelante, cada actualización de este documento se sigue escribiendo acá pero también se entrega como archivo para que Francisco lo reemplace en su repo (mismo flujo git add/commit/push que ya usa para el proyecto Vite) — el link de claude.ai queda como respaldo/vista previa, no como la fuente pública.', extra:{alcance:'Publicación de la Bitácora', alternativas:'Mantener el Artifact de claude.ai como único link público — descartado porque es privado a una cuenta y Francisco ya tenía su propia repo funcionando'}, confirmada:true},
+    {id:'c19', fecha:'2026-09-01', tipo:'contenido', autor:'Claude', contenido:'Francisco pidió que la Malla interactiva se vea mejor en mención Economía (como buscacursos.cl, la herramienta que él mismo armó) y agregó captura de la malla curricular oficial de Economía. Se navegó a economia.usach.cl y se encontró el origen real: un iframe que carga fae.usach.cl/cice/, la malla curricular oficial completa por semestre (y su versión anterior, fae.usach.cl/cice/index_2022.html, para ingresos hasta 2022) — justo la fuente consolidada que faltaba cuando se armó la Malla la primera vez (entrada c11), que en ese momento obligó a agrupar Economía por tipo de ramo en vez de por semestre porque BuscaCursos traía el campo "nivel" roto (todo marcado nivel 3). Se cruzaron los 32 ramos propios de Economía contra ambas mallas oficiales por nombre (y por número de electivo cuando el nombre es genérico, tipo "Electivo VIII: Evaluación de Proyectos"), usando el prefijo del código de BuscaCursos (351xxx = malla anterior a 2023, 352xxx = malla vigente desde 2023) para elegir cuál de las dos mallas usar como referencia cuando un ramo aparece en ambas con semestres distintos. Los 32 quedaron mapeados sin ambigüedad, repartidos en los semestres 4 a 10 (el semestre 3 no trajo ningún ramo propio de Economía en este corte de BuscaCursos — probablemente porque ese semestre todavía comparte secciones con Administración). Con esto Economía ahora se agrupa por semestre real igual que Administración, ya no por tipo. De paso se agregó un botón "Grande/Chica" (con el mismo espíritu compacto de buscacursos.cl) que guarda su estado en localStorage y aplica a las dos menciones, para poder ver las 10 columnas de semestre sin scrollear tanto en pantallas chicas.', extra:{seccion:'Malla interactiva', entregable:'/malla del proyecto Vite — src/data/malla.json y src/pages/MallaInteractiva.jsx'}, confirmada:true},
+    {id:'c20', fecha:'2026-09-01', tipo:'prototipo', autor:'Claude', contenido:'Francisco pidió agregar los mismos dos botones de arriba a la derecha de buscacursos.cl (la herramienta que él mismo armó) a este prototipo: el sol/luna para claro↔oscuro, y el lazo 🎀 para \'modo amigable\', una paleta cálida rosa/crema que es independiente del ciclo claro/oscuro (se puede prender desde cualquiera de los dos y, al apagarla, vuelve al que tenías antes). Se revisó el HTML de buscacursos.cl que Francisco subió y se hizo un port directo de su lógica a un componente React (src/components/ThemeToggle.jsx): mismos íconos SVG, mismo comportamiento (el sol/luna siempre apaga el modo amigable al tocarlo), mismo criterio de \'antes del primer paint\' para que no se vea un flash del tema equivocado al cargar la página (script agregado en index.html, el mismo lugar donde ya vivía el truco de rafgraph/spa-github-pages). Colores nuevos en src/index.css: el modo oscuro reutiliza el mismo teal/dorado que ya usa la Bitácora en su propio modo oscuro (para que todo el ecosistema CEIC — este prototipo, la Bitácora, WikiProfes — se sienta parte de un mismo sistema), y el modo amigable copia la paleta exacta de buscacursos.cl adaptada a las variables de este proyecto. Se usaron claves de localStorage propias (ceic-theme, ceic-amigable) distintas a las de buscacursos.cl (bc-usach-theme, bc-usach-amigable) para que las preferencias de los dos sitios no se pisen si alguna vez se abren en el mismo navegador. Verificado con Playwright: los tres estados (claro, oscuro, amigable) cambian correctamente, el estado persiste al recargar y al cambiar de página, y no quedó ningún error de consola nuevo.', extra:{seccion:'Header / tema visual', entregable:'src/components/ThemeToggle.jsx, src/index.css, index.html del proyecto Vite'}, confirmada:true},
+    {id:'c21', fecha:'2026-09-01', tipo:'incidencia', autor:'Claude', contenido:'Francisco preguntó cómo evitar que /bitacora (la vista de línea de tiempo dentro del prototipo) se quedara mostrando una versión vieja a alguien que ya la había visitado antes — el problema de fondo, señalado ya en la entrada c17: esa página guarda su copia en localStorage del navegador de cada persona la primera vez que entra, y de ahí en adelante lee esa copia guardada en vez del archivo actualizado, así que quien ya la visitó se queda pegado en esa versión aunque se agreguen entradas nuevas después. La solución no fue un \'version control\' en el sentido de git, sino más simple: en vez de pisar la copia guardada (lo que borraría los borradores o confirmaciones que la persona haya hecho ahí), loadEntries() ahora compara por id lo que hay guardado contra src/data/bitacora.json y agrega automáticamente cualquier entrada del archivo que todavía no esté en la copia guardada. Como la convención de esta bitácora ya era no editar entradas viejas (una corrección se registra como entrada nueva, nunca se reescribe una existente — está anotado en el propio formulario de \'Nueva entrada\'), comparar por id alcanza: nunca hace falta \'actualizar\' una entrada ya guardada, solo agregar las que falten. Se verificó con Playwright simulando el caso real: localStorage con una copia vieja (sin las últimas 3 entradas) más un borrador de prueba agregado por el usuario — al recargar, las 3 entradas nuevas aparecen y el borrador de prueba sigue intacto; una segunda recarga no duplica nada.', extra:{severidad:'media', estado:'Resuelto'}, confirmada:true}
   ];
 
   function bmLoad(){
@@ -1271,8 +1362,15 @@
   }
 
   function bmRenderSideNav(){
-    document.querySelectorAll('.bm-nav-btn').forEach(function(btn){
+    // Sidebar nav (desktop) — .bm-side-nav is hidden on narrow screens (see the
+    // max-width:760px rule), so #bmViewToggle below is what actually lets you
+    // switch to "Línea de tiempo completa" on mobile. Both stay in sync.
+    document.querySelectorAll('.bm-nav-btn[data-view]').forEach(function(btn){
       btn.setAttribute('aria-current', btn.getAttribute('data-view')===bmView ? 'true':'false');
+      btn.onclick = function(){ bmView = btn.getAttribute('data-view'); renderBm(); };
+    });
+    document.querySelectorAll('#bmViewToggle [data-view]').forEach(function(btn){
+      btn.setAttribute('aria-pressed', btn.getAttribute('data-view')===bmView ? 'true':'false');
       btn.onclick = function(){ bmView = btn.getAttribute('data-view'); renderBm(); };
     });
   }
@@ -1383,6 +1481,28 @@
   /* ---------- drawer / new entry form ---------- */
   var bmDrawer = document.getElementById('bmDrawer');
   var bmScrim = document.getElementById('bmScrim');
+  var bmScrollLockY = 0;
+
+  // Locking body scroll while the drawer is open avoids the classic mobile
+  // bug where the page behind a fixed-position panel becomes unscrollable
+  // or feels "stuck" after closing it (no scroll lock + position:fixed
+  // drawer is what usually causes that on iOS/Android).
+  function bmLockScroll(){
+    bmScrollLockY = window.scrollY || document.documentElement.scrollTop || 0;
+    document.body.style.position = 'fixed';
+    document.body.style.top = (-bmScrollLockY) + 'px';
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.width = '100%';
+  }
+  function bmUnlockScroll(){
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.width = '';
+    window.scrollTo(0, bmScrollLockY);
+  }
 
   function bmOpenDrawer(){
     var tipoSel = document.getElementById('bm-f-tipo');
@@ -1393,10 +1513,12 @@
     bmRenderExtraFields();
     bmDrawer.classList.add('open'); bmDrawer.setAttribute('aria-hidden','false');
     bmScrim.classList.add('open');
+    bmLockScroll();
   }
   function bmCloseDrawer(){
     bmDrawer.classList.remove('open'); bmDrawer.setAttribute('aria-hidden','true');
     bmScrim.classList.remove('open');
+    bmUnlockScroll();
   }
   function bmRenderExtraFields(){
     var tipo = document.getElementById('bm-f-tipo').value;
@@ -1446,5 +1568,11 @@
   document.addEventListener('keydown', function(ev){ if (ev.key==='Escape') bmCloseDrawer(); });
 
   renderBm();
+
+  /* restaurar la vista guardada (Plan / Bitácora) — recién ahora, con bmState
+     ya cargado, para no llamar renderBm() contra datos todavía sin definir */
+  var savedMode = 'plan';
+  try { savedMode = localStorage.getItem(MODE_KEY) || 'plan'; } catch(e){}
+  setMode(savedMode);
 })();
 </script>
